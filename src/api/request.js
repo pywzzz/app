@@ -32,3 +32,5 @@ requests.interceptors.response.use(
         return Promise.reject(new Error("faile"));
     }
 );
+
+export default requests;
