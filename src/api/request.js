@@ -1,6 +1,5 @@
 // 二次封装axios就是为了使用它的请求和响应拦截器
 import axios from "axios";
-import { config } from "vue/types/umd";
 
 /* requests是axios的实例对象
 创建一个实例对象的好处就是可以对axios进行一些配置 */
