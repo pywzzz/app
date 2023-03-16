@@ -9,6 +9,7 @@ Vue.component(TypeNav.name, TypeNav);
 
 Vue.config.productionTip = false;
 
+//这儿因为reqCategoryList是分别暴露，所以记得加{}
 import { reqCategoryList } from "@/api";
 reqCategoryList();
 
