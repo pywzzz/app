@@ -17,7 +17,15 @@
                             <h3 @mouseenter="changeIndex(index)">
                                 <a href="">{{ c1.categoryName }}</a>
                             </h3>
-                            <div class="item-list clearfix">
+                            <div
+                                class="item-list clearfix"
+                                :style="{
+                                    display:
+                                        currentIndex == index
+                                            ? 'block'
+                                            : 'none',
+                                }"
+                            >
                                 <!-- 遍历生成二级列表 -->
                                 <div
                                     class="subitem"
@@ -158,7 +166,6 @@ export default {
                     }
 
                     .item-list {
-                        display: none;
                         position: absolute;
                         width: 734px;
                         min-height: 460px;
@@ -208,12 +215,6 @@ export default {
                                     }
                                 }
                             }
-                        }
-                    }
-
-                    &:hover {
-                        .item-list {
-                            display: block;
                         }
                     }
                 }
