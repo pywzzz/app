@@ -174,8 +174,6 @@ export default {
     },
     // 下面事项当组件挂载完毕后向服务器发送请求
     mounted() {
-        //通知vuex发请求获取数据并将其存到TypeNav所在的其中一个组件，Home，的仓库中去
-        this.$store.dispatch("categoryList");
         // 只有Home和Search组件使用了TypeNav组件，所以下面的判断就是，只要路径不是 /home 那就将isShow置为false，即不显示
         if (this.$route.path != "/home") {
             this.isShow = false;

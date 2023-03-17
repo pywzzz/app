@@ -18,6 +18,12 @@ export default {
         Hearder,
         Footer,
     },
+    mounted() {
+        // 通知vuex发请求获取数据并将其存到TypeNav所在的其中一个组件，Home，的仓库中去
+        // 写在TypeNav的话，因为TypeNav组件会在如从Home切换到Search时销毁、生成，从而会向服务器请求很多次数据
+        // 而App只生成一次，所以就请求一次，性能好
+        this.$store.dispatch("categoryList");
+    },
 };
 </script>
 
