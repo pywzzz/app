@@ -4,7 +4,14 @@
             <div @mouseleave="leaveIndex">
                 <h2 class="all">全部商品分类</h2>
                 <div class="sort">
-                    <div class="all-sort-list2">
+                    <!-- 如果使用声明式导航的router-link的话，你在每级列表各自的div中写时，在执时，会把router-link这组件
+                        也for好多次，这么一来，你router-link太多了，卡得一逼 -->
+                    <!-- 如果用编程式导航，也是写在每级列表各自的div中时，这时的效果就是，不止div中的a标签会跳转了，div中的h标签页
+                    有路由跳转的效果了，这就乱了 -->
+                    <!-- 但编程式导航的思路是没错的，只不过这玩意儿不应该写在每级列表各自的div中，而是应写在列表们的那个大亲爹div去统一去
+                    弄。期间需要通过vue自定义属性这东西来区分出a标签从而保证只有a标签具有跳转的功能，并且通过自定义属性来区分列表是几
+                    级分类 -->
+                    <div class="all-sort-list2" @click="toSearch">
                         <!-- 遍历生成一级列表 -->
                         <!-- 其中的 :class="{ cur: currentIndex == index } 可以理解为，{}中是个kv键值对
                     且这儿的v是一个逻辑表达式，返回值为ture或false。从而控制cur这个样式是否生效 -->
@@ -15,7 +22,14 @@
                             :class="{ cur: currentIndex == index }"
                         >
                             <h3 @mouseenter="changeIndex(index)">
-                                <a href="">{{ c1.categoryName }}</a>
+                                <!-- 自定义属性的格式为 ：data-属性名 -->
+                                <!-- 如果属性名是驼峰式的写法，则浏览器在加载时，会将其全部转为小写，如 data-toApp 会变成data-toapp -->
+                                <!-- 通过v-for带来的categoryName来判断是否为a标签，用category1Id来判断是否为一级列表 -->
+                                <a
+                                    :data-categoryName="c1.categoryName"
+                                    :data-category1Id="c1.categoryId"
+                                    >{{ c1.categoryName }}</a
+                                >
                             </h3>
                             <div
                                 class="item-list clearfix"
@@ -34,7 +48,15 @@
                                 >
                                     <dl class="fore">
                                         <dt>
-                                            <a href="">{{ c2.categoryName }}</a>
+                                            <a
+                                                :data-categoryName="
+                                                    c2.categoryName
+                                                "
+                                                :data-category2Id="
+                                                    c2.categoryId
+                                                "
+                                                >{{ c2.categoryName }}</a
+                                            >
                                         </dt>
                                         <dd>
                                             <!-- 遍历生成三级列表 -->
@@ -42,9 +64,15 @@
                                                 v-for="c3 in c2.categoryChild"
                                                 :key="c3.categoryId"
                                             >
-                                                <a href="">{{
-                                                    c3.categoryName
-                                                }}</a>
+                                                <a
+                                                    :data-categoryName="
+                                                        c3.categoryName
+                                                    "
+                                                    :data-category3Id="
+                                                        c3.categoryId
+                                                    "
+                                                    >{{ c3.categoryName }}</a
+                                                >
                                             </em>
                                         </dd>
                                     </dl>
@@ -92,6 +120,43 @@ export default {
         }, 50),
         leaveIndex() {
             this.currentIndex = -1;
+        },
+        toSearch(event) {
+            // 每个元素身上都会有一个dataset属性，它存储了属性身上所有的自定义属性
+            // 下面一行就利用dataset属性将你自定义的4个属性解构出来使用
+            /* 注意这儿category1id、category2id这些解构用的东西必须小写，前面说了浏览器会将驼峰解析成小写，
+            再加上，这儿的解构是ES6的语法，kv一致？不知道，反正就那意思 */
+            let { categoryname, category1id, category2id, category3id } =
+                event.target.dataset;
+            // 因为只有a标签可以解构出categoryname，所以只有a标签可以进入这个if
+            if (categoryname) {
+                // /search路由的name你配置的就是叫search，所以你这儿也让location的为search，一会儿用来跳转路由
+                let location = { name: "search" };
+                // 为query添一个kv键值对，k为categoryName，v为解构出的categoryname
+                let query = { categoryName: categoryname };
+                // 下面三个if判断是几级列表，并为query添加相应的kv
+                if (category1id) {
+                    query.category1Id = category1id;
+                } else if (category2id) {
+                    query.category2Id = category2id;
+                } else if (category3id) {
+                    query.category3Id = category3id;
+                }
+                // 为location添加一个kv，k为自己起了个名字叫query，v为上面折腾半天的query
+                location.query = query;
+                // vue的push要传的参数就是kv，如：
+                /* this.$router.push({
+                    name: "xiangqing",
+                    params: {
+                        id: xxx,
+                        title: xxx,
+                    },
+                }); */
+                // 那这儿，name就是没加query时的location，params即，参数部分，就是query
+                // 然后push上去
+                // 这时地址就如：localhost:8080/#/search?categoryName=%E7%87%83%E6%B0%94%E7%81%B6&category3Id=100 云了
+                this.$router.push(location);
+            }
         },
     },
     // 下面事项当组件挂载完毕后向服务器发送请求
