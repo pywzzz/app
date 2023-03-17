@@ -20,7 +20,11 @@ export default new VueRouter({
         },
         {
             name: "search",
-            path: "/search",
+            // 占位以收集param参数
+            // 末尾的 ? 表示param参数可传可不传
+            /* 即如果你不加的话，当你访 localhost:8080/#/home/search?canshu=444 ，因为你没有传param参数，
+            所以实际的地址栏上会显示 localhost:8080/#/home/?canshu=444 ，且你的路由也并不会跳转 */
+            path: "/search/:keyword?",
             component: Search,
             meta: { isShow: true },
         },

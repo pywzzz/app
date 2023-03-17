@@ -157,6 +157,8 @@ export default {
                 }
                 // 为location添加一个kv，k为自己起了个名字叫query，v为上面折腾半天的query
                 location.query = query;
+                // 如果你先在search栏输东西的话搜，按你写的代码，则会在Header的index.js中收到一个param参数，所以这儿得拼接一下
+                location.params = this.$route.params;
                 // vue的push要传的参数就是kv，如：
                 /* this.$router.push({
                     name: "xiangqing",

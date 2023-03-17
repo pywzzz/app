@@ -40,6 +40,7 @@
                         type="text"
                         id="autocomplete"
                         class="input-error input-xxlarge"
+                        v-model="keyword"
                     />
                     <button
                         class="sui-btn btn-xlarge btn-danger"
@@ -55,9 +56,26 @@
 </template>
 <script>
 export default {
+    data() {
+        return {
+            keyword: "",
+        };
+    },
     methods: {
         toSearch() {
-            this.$router.push("/search");
+            let location = {
+                name: "search",
+                // params的kv键值对中k为自定义的keyword，v为上面通过v-model接到的data数据，数据名叫keyword
+                /* 当你指定了param可传可不传后，一个新的问题就是，当param参数是个空的字符串的话，虽然路由会跳转，
+                但是仍会出现地址栏显示 localhost:8080/#/home/?canshu=444 ，即，没有/search这param参数的
+                错误。这儿把 keyword: this.keyword 弄成 keyword: this.keyword || undefined即可
+                解决问题 */
+                params: { keyword: this.keyword || undefined },
+            };
+            // 如果你先点导航栏，按你写的代码，则会在TypeNav的index.js中收到一个query参数，所以这儿得拼接一下
+            location.query = this.$route.query;
+            // 如果把 let location 中的一堆写到push({})中，那这是路由传递参数的对象写法
+            this.$router.push(location);
         },
     },
 };
