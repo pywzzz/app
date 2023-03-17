@@ -85,8 +85,6 @@ export default {
     },
     methods: {
         // 节流时间为50ms
-        // 下面是kv写法，k为changeIndex，v为throttle函数
-        // throttle函数中的第一个参数是你需要进行节流的函数，第二个是配置节流多长时间
         changeIndex: throttle(function (index) {
             this.currentIndex = index;
         }, 50),
