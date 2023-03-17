@@ -1,9 +1,9 @@
 <template>
     <div class="type-nav">
         <div class="container">
-            <div @mouseleave="leaveIndex">
+            <div @mouseleave="leaveIndex" @mouseenter="enterShow">
                 <h2 class="all">全部商品分类</h2>
-                <div class="sort">
+                <div class="sort" v-show="isShow">
                     <!-- 如果使用声明式导航的router-link的话，你在每级列表各自的div中写时，在执时，会把router-link这组件
                         也for好多次，这么一来，你router-link太多了，卡得一逼 -->
                     <!-- 如果用编程式导航，也是写在每级列表各自的div中时，这时的效果就是，不止div中的a标签会跳转了，div中的h标签页
@@ -109,6 +109,7 @@ export default {
             // 一共有16个一级分类，对应0~15。0~15这标号由v-for的index生成
             // 这里的-1代表谁都不选
             currentIndex: -1,
+            isShow: true,
         };
     },
     methods: {
@@ -118,8 +119,20 @@ export default {
         changeIndex: throttle(function (index) {
             this.currentIndex = index;
         }, 50),
+        enterShow() {
+            /* 其实这儿不用加这个if判断，因为鼠标enter时候调用enterShow来显示,
+            当鼠标leave时，调用leaveIndex，而Home进不去这个if，所以isShow还是true云 */
+            if (this.$route.path != "/home") {
+                this.isShow = true;
+            }
+        },
         leaveIndex() {
             this.currentIndex = -1;
+            /* enterShow中不用加这个if判断，因为鼠标enter时候调用enterShow来显示,
+            当鼠标leave时，调用leaveIndex，而Home进不去这个if，所以isShow还是true云 */
+            if (this.$route.path != "/home") {
+                this.isShow = false;
+            }
         },
         toSearch(event) {
             // 每个元素身上都会有一个dataset属性，它存储了属性身上所有的自定义属性
@@ -163,6 +176,10 @@ export default {
     mounted() {
         //通知vuex发请求获取数据并将其存到TypeNav所在的其中一个组件，Home，的仓库中去
         this.$store.dispatch("categoryList");
+        // 只有Home和Search组件使用了TypeNav组件，所以下面的判断就是，只要路径不是 /home 那就将isShow置为false，即不显示
+        if (this.$route.path != "/home") {
+            this.isShow = false;
+        }
     },
     computed: {
         ...mapState({
