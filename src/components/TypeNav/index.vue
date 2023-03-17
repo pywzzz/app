@@ -71,6 +71,9 @@
 
 <script>
 import { mapState } from "vuex";
+// 按需引入throttle这个节流函数
+// 人弄的是默认暴露，所以不用 {throttle} 了。直接 throttle 就行
+import throttle from "lodash/throttle";
 export default {
     name: "TypeNav",
     data() {
@@ -81,9 +84,10 @@ export default {
         };
     },
     methods: {
-        changeIndex(index) {
+        // 节流时间为50ms
+        changeIndex: throttle(function (index) {
             this.currentIndex = index;
-        },
+        }, 50),
         leaveIndex() {
             this.currentIndex = -1;
         },
