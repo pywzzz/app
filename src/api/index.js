@@ -13,6 +13,13 @@ import mockRequests from "./mockRequest";
 export const reqCategoryList = () =>
     requests({ url: "/product/getBaseCategoryList", method: "get" });
 
+// 获取Search模块的相关数据
+// 这儿用data属性去接收参数
+// 使用reqGetSearchInfo这个函数时，它的形参params，至少是一个空对象，即 {} ，否则此次请求是会失败的
+// 如你用postman的k为params，当v为 {} 人返回了1即成功，当v为空时，返回的是请求失败相关云
+export const reqGetSearchInfo = (params) =>
+    requests({ url: "/list", method: "post", data: params });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 
