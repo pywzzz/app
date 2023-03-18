@@ -3,10 +3,15 @@
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" id="mySwiper">
+                <div class="swiper-container" ref="mySwiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <img src="./images/banner1.jpg" />
+                        <div
+                            class="swiper-slide"
+                            v-for="carousel in bannerList"
+                            :key="carousel.id"
+                        >
+                            <!-- 这儿可别忘了给src加前加上 : ，妈的 -->
+                            <img :src="carousel.imgUrl" />
                         </div>
                     </div>
                     <!-- 如果需要分页器 -->
@@ -107,8 +112,14 @@
 
 <script>
 import { mapState } from "vuex";
+import Swiper from "swiper";
 export default {
     name: "",
+    /* swiper的初始化不能在mounted中弄，因为当涉及异步什么的时候时，比如这儿，你的mounted一上来
+    其实并没有加载完所有的dom，因为你的dom中有个v-for，而v-for是从store中拿数据的（store从服务
+    器取数据也需要时间），所以还得等一会儿，等v-for弄完时，才算彻底加载完所有dom。
+    这时才能按照swiper的规定：dom弄完才能初始化swiper。去，初始化swiper，所以你必须加个定时
+    器什么的。土。 */
     mounted() {
         this.$store.dispatch("getBannerList");
     },
@@ -116,6 +127,52 @@ export default {
         ...mapState({
             bannerList: (state) => state.home.bannerList,
         }),
+    },
+    // 利用watch监测bannerList在home的store中的数据是否准备好
+    watch: {
+        /* bannerList: {
+            // bannerList一发生改变，就执handler中的函数
+            handler(newValue, oldValue) {
+                // $nextTick的参数是个回调函数，这个回调函数会在dom节点更新完毕后再执行
+                this.$nextTick(() => {
+                    var mySwiper = new Swiper(
+                        document.querySelector(".swiper-container"),
+                        {
+                            loop: true,
+                            pagination: {
+                                el: ".swiper-pagination",
+                                // true时，就可以通过点击轮播图下面的小点来控制轮播图的跳转
+                                clickable: true,
+                            },
+                            navigation: {
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-next",
+                            },
+                        }
+                    );
+                });
+            },
+        }, */
+
+        //这儿是简写形式，上方是完整形式
+        bannerList() {
+            // $nextTick的参数是个回调函数，这个回调函数会在dom节点更新完毕后再执行
+            this.$nextTick(() => {
+                // 用ref获取dom
+                new Swiper(this.$refs.mySwiper, {
+                    loop: true,
+                    pagination: {
+                        el: ".swiper-pagination",
+                        // true时，就可以通过点击轮播图下面的小点来控制轮播图的跳转
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-next",
+                    },
+                });
+            });
+        },
     },
 };
 </script>
