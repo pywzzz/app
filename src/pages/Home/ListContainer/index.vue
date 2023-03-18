@@ -3,24 +3,7 @@
         <div class="sortList clearfix">
             <div class="center">
                 <!--banner轮播-->
-                <div class="swiper-container" ref="mySwiper">
-                    <div class="swiper-wrapper">
-                        <div
-                            class="swiper-slide"
-                            v-for="carousel in bannerList"
-                            :key="carousel.id"
-                        >
-                            <!-- 这儿可别忘了给src加前加上 : ，妈的 -->
-                            <img :src="carousel.imgUrl" />
-                        </div>
-                    </div>
-                    <!-- 如果需要分页器 -->
-                    <div class="swiper-pagination"></div>
-
-                    <!-- 如果需要导航按钮 -->
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
+                <Carousel :list="bannerList"></Carousel>
             </div>
             <div class="right">
                 <div class="news">
@@ -127,55 +110,6 @@ export default {
         ...mapState({
             bannerList: (state) => state.home.bannerList,
         }),
-    },
-    // 利用watch监测bannerList在home的store中的数据是否准备好
-    watch: {
-        /* bannerList: {
-            // bannerList一发生改变，就执handler中的函数
-            handler(newValue, oldValue) {
-                // $nextTick的参数是个回调函数，这个回调函数会在dom节点更新完毕后再执行
-                this.$nextTick(() => {
-                    var mySwiper = new Swiper(
-                        document.querySelector(".swiper-container"),
-                        {
-                            loop: true,
-                            pagination: {
-                                el: ".swiper-pagination",
-                                // true时，就可以通过点击轮播图下面的小点来控制轮播图的跳转
-                                clickable: true,
-                            },
-                            navigation: {
-                                nextEl: ".swiper-button-next",
-                                prevEl: ".swiper-button-next",
-                            },
-                        }
-                    );
-                });
-            },
-        }, */
-
-        // 这儿只是为了迎合全局组件Carousel才弄的，不写这东西功能是照旧的
-        immediate: true,
-
-        //这儿是简写形式，上方是完整形式
-        bannerList() {
-            // $nextTick的参数是个回调函数，这个回调函数会在dom节点更新完毕后再执行
-            this.$nextTick(() => {
-                // 用ref获取dom
-                new Swiper(this.$refs.mySwiper, {
-                    loop: true,
-                    pagination: {
-                        el: ".swiper-pagination",
-                        // true时，就可以通过点击轮播图下面的小点来控制轮播图的跳转
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: ".swiper-button-next",
-                        prevEl: ".swiper-button-next",
-                    },
-                });
-            });
-        },
     },
 };
 </script>

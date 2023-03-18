@@ -31,23 +31,7 @@
                         </div>
                         <div class="floorBanner">
                             <!-- 轮播图部分 -->
-                            <div class="swiper-container" ref="cur">
-                                <div class="swiper-wrapper">
-                                    <div
-                                        class="swiper-slide"
-                                        v-for="carousel in list.carouselList"
-                                        :key="carousel.id"
-                                    >
-                                        <img :src="carousel.imgUrl" />
-                                    </div>
-                                </div>
-                                <!-- 如果需要分页器 -->
-                                <div class="swiper-pagination"></div>
-
-                                <!-- 如果需要导航按钮 -->
-                                <div class="swiper-button-prev"></div>
-                                <div class="swiper-button-next"></div>
-                            </div>
+                            <Carousel :list="list.carouselList"></Carousel>
                         </div>
                         <div class="split">
                             <span class="floor-x-line"></span>
@@ -78,35 +62,10 @@
 </template>
 
 <script>
-import Swiper from "swiper";
 export default {
     name: "",
     // 接收从亲爹Home那儿传过来的参
     props: ["list"],
-    watch: {
-        list: {
-            // list这个数据是父组件Home给的，这种一开始就有的东西，没有变化，所以不添加immediate的话是watch不到的
-            // immediate表示上去就监听一下
-            immediate: true,
-            handler() {
-                this.$nextTick(() => {
-                    // 用ref获取dom
-                    new Swiper(this.$refs.cur, {
-                        loop: true,
-                        pagination: {
-                            el: ".swiper-pagination",
-                            // true时，就可以通过点击轮播图下面的小点来控制轮播图的跳转
-                            clickable: true,
-                        },
-                        navigation: {
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-next",
-                        },
-                    });
-                });
-            },
-        },
-    },
     mounted() {
         /* 这儿的轮播图不像ListContainer组件那儿的，这儿的是可以放到mounted中的，不需要watch和$nextTick什么的
         因为这儿的数据和dom结构，不是交给Floor组件完成的，完成这些的是它的父组件Home
