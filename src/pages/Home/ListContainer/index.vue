@@ -154,6 +154,9 @@ export default {
             },
         }, */
 
+        // 这儿只是为了迎合全局组件Carousel才弄的，不写这东西功能是照旧的
+        immediate: true,
+
         //这儿是简写形式，上方是完整形式
         bannerList() {
             // $nextTick的参数是个回调函数，这个回调函数会在dom节点更新完毕后再执行
