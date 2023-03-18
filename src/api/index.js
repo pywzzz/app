@@ -20,3 +20,6 @@ export const reqGetBannerList = () => mockRequests.get("/banner");
 /* export const reqCategoryList = () => {
     return requests({ url: "/product/getBaseCategoryList", method: "get" });
 }; */
+
+// 获取floor数据
+export const reqFloorList = () => mockRequests.get("/floor");

@@ -1,10 +1,12 @@
-import { reqCategoryList, reqGetBannerList } from "@/api";
+import { reqCategoryList, reqGetBannerList, reqFloorList } from "@/api";
 // 仓库存数据的地方
 const state = {
     // 因为服务器返回的数据是数组，所以相对应地，这儿的初始值也应为数组
     categoryList: [],
     // 这是轮播图的数据
     bannerList: [],
+    // 这是floor组件的数据
+    floorList: [],
 };
 // 修改state的唯一地方
 const mutations = {
@@ -13,6 +15,9 @@ const mutations = {
     },
     GETBANNERLIST(state, bannerList) {
         state.bannerList = bannerList;
+    },
+    GETFLOORLIST(state, floorList) {
+        state.floorList = floorList;
     },
 };
 // 书写业务逻辑，处理异步云
@@ -30,6 +35,12 @@ const actions = {
         let result = await reqGetBannerList();
         if (result.code == 200) {
             commit("GETBANNERLIST", result.data);
+        }
+    },
+    async getFloorList({ commit }) {
+        let result = await reqFloorList();
+        if (result.code == 200) {
+            commit("GETFLOORLIST", result.data);
         }
     },
 };

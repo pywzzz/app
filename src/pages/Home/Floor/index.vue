@@ -89,6 +89,8 @@
 <script>
 export default {
     name: "",
+    // 接收从亲爹Home那儿传过来的参
+    props: ["list"],
 };
 </script>
 
