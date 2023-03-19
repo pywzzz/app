@@ -7,6 +7,7 @@
                     <li
                         v-for="trademark in trademarkList"
                         :key="trademark.tmId"
+                        @click="trademarkHandler(trademark)"
                     >
                         {{ trademark.tmName }}
                     </li>
@@ -54,6 +55,12 @@ export default {
     computed: {
         // 拿到从Search组件的getters中拿到子组件SearchSelector这儿需要用的数据
         ...mapGetters(["trademarkList", "attrsList"]),
+    },
+    methods: {
+        trademarkHandler(trademark) {
+            // 传给父组件的回调函数trademarkInfo，并传递一个叫trademark的数据
+            this.$emit("trademarkInfo", trademark);
+        },
     },
 };
 </script>

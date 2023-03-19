@@ -21,11 +21,18 @@
                             {{ searchParams.keyword
                             }}<i @click="removeKeyword">×</i>
                         </li>
+                        <!-- 下面是SearchSelector组件中品牌的面包屑 -->
+                        <!-- 这儿的插值语法弄个 .split(":")[1] 是因为trademark的数据格式
+                        是 ID:NAME ，我们只想展示NAME，所以split下 -->
+                        <li class="with-x" v-if="searchParams.trademark">
+                            {{ searchParams.trademark.split(":")[1]
+                            }}<i @click="removeTrademark">×</i>
+                        </li>
                     </ul>
                 </div>
 
-                <!--selector-->
-                <SearchSelector />
+                <!-- 这个自定义事件是为了实现子组件SearchSelector向父组件Search传参用 -->
+                <SearchSelector @trademarkInfo="trademarkInfo" />
 
                 <!--details-->
                 <div class="details clearfix">
@@ -217,6 +224,19 @@ export default {
                 // 别忘了带上query参数
                 query: this.$route.query,
             });
+        },
+        removeTrademark() {
+            // 置空的话面包屑那部分的v-if就为false，所以隐藏了，所以就达到了删除的效果
+            this.searchParams.trademark = "";
+            this.getData();
+        },
+        // 实现子组件SearchSelector向父组件Search传参用的自定义事件@trademarkInfo的回调函数
+        // 接收子组件传来的叫trademark的数据
+        trademarkInfo(trademark) {
+            // 迎合人规定的trademark数据的格式： ID:NAME
+            this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+            // 弄完后重新请求数据
+            this.getData();
         },
     },
     watch: {
