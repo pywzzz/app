@@ -20,6 +20,11 @@ import "swiper/css/swiper.css";
 Vue.config.productionTip = false;
 new Vue({
     render: (h) => h(App),
+    // 配置全局事件总线
+    // 这儿主要用于Search和Header这两个兄弟组件的通信
+    beforeCreate() {
+        Vue.prototype.$bus = this;
+    },
     //es6的kv一致省略v的写法
     // 引入router这个新的配置项
     router,

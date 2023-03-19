@@ -78,6 +78,12 @@ export default {
             this.$router.push(location);
         },
     },
+    mounted() {
+        // 收到Search组件那儿下达的任务，把keyword给清了
+        this.$bus.$on("clear", () => {
+            this.keyword = "";
+        });
+    },
 };
 </script>
 <style lang="less" scoped>

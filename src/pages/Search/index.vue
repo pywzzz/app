@@ -11,10 +11,16 @@
                         </li>
                     </ul>
                     <ul class="fl sui-tag">
-                        <li class="with-x">手机</li>
-                        <li class="with-x">iphone<i>×</i></li>
-                        <li class="with-x">华为<i>×</i></li>
-                        <li class="with-x">OPPO<i>×</i></li>
+                        <!-- 下面是三级列表的面包屑 -->
+                        <li class="with-x" v-if="searchParams.categoryName">
+                            {{ searchParams.categoryName
+                            }}<i @click="removeCategoryName">×</i>
+                        </li>
+                        <!-- 下面是用户输入的关键字的面包屑 -->
+                        <li class="with-x" v-if="searchParams.keyword">
+                            {{ searchParams.keyword
+                            }}<i @click="removeKeyword">×</i>
+                        </li>
                     </ul>
                 </div>
 
@@ -181,6 +187,37 @@ export default {
             // 这里传入searchParams参数
             this.$store.dispatch("getSearchList", this.searchParams);
         },
+        removeCategoryName() {
+            // 置空的话面包屑那部分的v-if就为false，所以隐藏了，所以就达到了删除的效果
+            this.searchParams.categoryName = "";
+            // 这儿置为undefined比置空的好处是这样的话，category-xxx-Id这个属性也不会带到请求数据中了，性能更好
+            // 这儿置为undefined的理由和watch中的$route一样
+            this.searchParams.category1Id = undefined;
+            this.searchParams.category2Id = undefined;
+            this.searchParams.category3Id = undefined;
+            // 这儿是实现面包屑关闭后跳转到之前的页面
+            /* 面包屑关闭后，下面的代码使路由发生变化，触发了watch的$route，从而调了 this.getData() 所以
+            removeCategoryName中就不用写这句了 */
+            this.$router.push({
+                name: "search",
+                // 别忘了带上params参数
+                params: this.$route.params,
+            });
+        },
+        removeKeyword() {
+            // 置空的话面包屑那部分的v-if就为false，所以隐藏了，所以就达到了删除的效果
+            this.searchParams.keyword = "";
+            // 通知兄弟组件Header把那儿的keyword给清下
+            this.$bus.$emit("clear");
+            // 这儿是实现面包屑关闭后跳转到之前的页面
+            /* 面包屑关闭后，下面的代码使路由发生变化，触发了watch的$route，从而调了 this.getData() 所以
+            removeKeyword中就不用写这句了 */
+            this.$router.push({
+                name: "search",
+                // 别忘了带上query参数
+                query: this.$route.query,
+            });
+        },
     },
     watch: {
         $route: {
@@ -193,9 +230,9 @@ export default {
                 /* 就，如你的某一轮请求，得到了category2Id，值为47，其余两个为空。之后接下来第二次请求，这次请求运气好，仍得到的category2Id，只是值变为22，这时
                 assign为你合并了一下，现在你拥有的是category2Id，值为22，其余两个为空。但第三轮运气没这么好了，下一轮得到的是category3Id，值为87，那这时候，
                 assign一合并的话，值为22的category2Id并不会被覆盖，同时你又得到了个新的category3Id，这时就是，你同时拥有了两个category-xxx-Id属性，乱了就 */
-                this.searchParams.category1Id = "";
-                this.searchParams.category2Id = "";
-                this.searchParams.category3Id = "";
+                this.searchParams.category1Id = undefined;
+                this.searchParams.category2Id = undefined;
+                this.searchParams.category3Id = undefined;
                 // 下面这段原来是写在beforeMount中的，现在照搬到这儿（注释也是照搬的）
                 // 这儿的assign是ES6的语法，用于对象的合并。它会把第1个参数后面的几个参数覆盖到第1个参数
                 // 所以这儿你就不用写很多如 this.searchParams.category1Id=this.$route.query.category1Id 这种了
