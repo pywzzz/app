@@ -24,7 +24,20 @@ const actions = {
     },
 };
 // 功能类似计算属性，用于少些写东西
-const getters = {};
+const getters = {
+    goodsList(state) {
+        /* 这儿在后面加了个 || [] 是因为，如果网络不好的话，则state.searchList，按你在上面的state中写的，它的值
+        就应该是 {} ，那这时，你在 {} 去 .goodsList 的话，那goodsList的值就是个undefined了，那一会儿人拿着
+        这个undefined去弄些v-for什么的，不就乱了，所以这儿得，加个 || []  */
+        return state.searchList.goodsList || [];
+    },
+    trademarkList(state) {
+        return state.searchList.trademarkList;
+    },
+    attrsList(state) {
+        return state.searchList.attrsList;
+    },
+};
 
 // 对外暴露Store类的一个实例对象
 export default {
