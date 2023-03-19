@@ -173,16 +173,6 @@ export default {
     computed: {
         ...mapGetters(["goodsList"]),
     },
-    // beforeMount中的东西在，组件挂载完毕之前执
-    beforeMount() {
-        // 这儿的assign是ES6的语法，用于对象的合并。它会把第1个参数后面的几个参数覆盖到第1个参数
-        // 所以这儿你就不用写很多如 this.searchParams.category1Id=this.$route.query.category1Id 这种了
-        Object.assign(this.searchParams, this.$route.query, this.$route.params);
-    },
-    mounted() {
-        // Search组件第一次挂载时候先加载出数据
-        this.getData();
-    },
     methods: {
         getData() {
             // 获取search仓库的数据
@@ -190,6 +180,34 @@ export default {
             你已经在search的store的actions配默认参为 {} 了 */
             // 这里传入searchParams参数
             this.$store.dispatch("getSearchList", this.searchParams);
+        },
+    },
+    watch: {
+        $route: {
+            // 上去就watch一下，让Search组件有相应的数据
+            // 不加这个 immediate: true 的话你还得在beforeMount和mounted中分别写个 Object.assign(XXX) 和 this.getData() 云
+            immediate: true,
+            handler() {
+                /* 因为，在一次请求得到的数据中，category1Id、category2Id、category3Id这三个东西，数据中只需要一个（另外两个应为空），就，你的数据不能
+                即拥有category1Id又拥有category2Id。所以你需要下面三行的置空，从而避免上面assign的时候把上一轮的category-xxx-Id“合并”到新的一轮 */
+                /* 就，如你的某一轮请求，得到了category2Id，值为47，其余两个为空。之后接下来第二次请求，这次请求运气好，仍得到的category2Id，只是值变为22，这时
+                assign为你合并了一下，现在你拥有的是category2Id，值为22，其余两个为空。但第三轮运气没这么好了，下一轮得到的是category3Id，值为87，那这时候，
+                assign一合并的话，值为22的category2Id并不会被覆盖，同时你又得到了个新的category3Id，这时就是，你同时拥有了两个category-xxx-Id属性，乱了就 */
+                this.searchParams.category1Id = "";
+                this.searchParams.category2Id = "";
+                this.searchParams.category3Id = "";
+                // 下面这段原来是写在beforeMount中的，现在照搬到这儿（注释也是照搬的）
+                // 这儿的assign是ES6的语法，用于对象的合并。它会把第1个参数后面的几个参数覆盖到第1个参数
+                // 所以这儿你就不用写很多如 this.searchParams.category1Id=this.$route.query.category1Id 这种了
+                Object.assign(
+                    this.searchParams,
+                    this.$route.query,
+                    this.$route.params
+                );
+                // 下面这一行原来是写在mounted中的，现在照搬到这儿（注释也是照搬的）
+                // Search组件第一次挂载时候先加载出数据
+                this.getData();
+            },
         },
     },
 };
