@@ -143,11 +143,13 @@
                     </div>
                     <!-- pageNo代表当前是第几页，pageSize表示一页多少数据，total表示数据总数，continues分页器那儿连续显示几个页码 -->
                     <!-- 这些数据会传给子组件Pagination -->
+                    <!-- @getPageNo用于子组件Pagination往父组件Search传数据 -->
                     <Pagination
-                        :pageNo="26"
-                        :pageSize="3"
-                        :total="90"
+                        :pageNo="searchParams.pageNo"
+                        :pageSize="searchParams.pageSize"
+                        :total="total"
                         :continues="5"
+                        @getPageNo="getPageNo"
                     ></Pagination>
                 </div>
             </div>
@@ -156,7 +158,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import SearchSelector from "./SearchSelector/SearchSelector";
 export default {
     name: "Search",
@@ -213,6 +215,10 @@ export default {
         isDesc() {
             return this.searchParams.order.indexOf("desc") != -1;
         },
+        //从search仓库拿到数据总数total，这个数据，供分页器用
+        ...mapState({
+            total: (state) => state.search.searchList.total,
+        }),
     },
     methods: {
         getData() {
@@ -308,6 +314,13 @@ export default {
             }
             this.searchParams.order = newOrder;
             // 弄完后重新请求数据
+            this.getData();
+        },
+        // @getPageNo的回调函数，用来收子组件Pagination要传的数据
+        getPageNo(pageNo) {
+            // 用户点击第几页后，数据传到形参pageNo，这儿往searchParams里更新一哈
+            this.searchParams.pageNo = pageNo;
+            // 重新请求数据
             this.getData();
         },
     },

@@ -1,26 +1,53 @@
 <template>
     <div class="pagination">
         <!-- 分页器左部分 -->
-        <button>上一页</button>
+        <!-- 如果当前是第1页的话，用html的disabled属性来阻止用户点击 -->
+        <!-- 点击后会向父组件Search传送 pageNo - 1 这个数据 -->
+        <button :disabled="pageNo == 1" @click="$emit('getPageNo', pageNo - 1)">
+            上一页
+        </button>
         <!-- 用v-if控制何时显示 -->
-        <button v-if="startNumAndEndNum.start > 1">1</button>
+        <button
+            v-if="startNumAndEndNum.start > 1"
+            @click="$emit('getPageNo', 1)"
+        >
+            1
+        </button>
+        <!-- ... 这个按钮是不能点的 -->
         <button v-if="startNumAndEndNum.start > 2">···</button>
         <!-- 分页器中部分 -->
         <!-- v-for是可以遍历数字的，它会从1开始,到v-for的数字处结束 -->
+        <!-- 点击后会向父组件Search传送 pageNo 这个数据 -->
+        <!-- active样式效果为背景高亮，表示选中。这儿不用单独给第1页和第totalPage页
+        单独加这个active样式的相关，因为它俩都是在这儿v-for循环生成的 -->
         <button
             v-for="(page, index) in startNumAndEndNum.end"
             :key="index"
             v-if="page >= startNumAndEndNum.start"
+            @click="$emit('getPageNo', page)"
+            :class="{ active: pageNo == page }"
         >
             {{ page }}
         </button>
         <!-- 分页器右部分 -->
         <!-- 用v-if控制何时显示 -->
+        <!-- ... 这个按钮是不能点的 -->
         <button v-if="startNumAndEndNum.end < totalPage - 1">···</button>
-        <button v-if="startNumAndEndNum.end < totalPage">
+        <!-- 点击后会向父组件Search传送 totalPage 这个数据 -->
+        <button
+            v-if="startNumAndEndNum.end < totalPage"
+            @click="$emit('getPageNo', totalPage)"
+        >
             {{ totalPage }}
         </button>
-        <button>下一页</button>
+        <!-- 如果当前是第totalPage页即最后一页的话，用html的disabled属性来阻止用户点击 -->
+        <!-- 点击后会向父组件Search传送 pageNo + 1 这个数据 -->
+        <button
+            :disabled="pageNo == totalPage"
+            @click="$emit('getPageNo', pageNo - 1)"
+        >
+            下一页
+        </button>
         <button style="margin-left: 30px">共 {{ total }} 条</button>
     </div>
 </template>
@@ -35,6 +62,7 @@ export default {
             // ceil表示向上取整
             return Math.ceil(this.total / this.pageSize);
         },
+        // 分页器的开头页码和结尾页码
         startNumAndEndNum() {
             // 先解构一下
             const { continues, pageNo, totalPage } = this;
