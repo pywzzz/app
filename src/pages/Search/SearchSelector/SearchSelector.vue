@@ -38,6 +38,7 @@
                     <li
                         v-for="(attrValue, index) in attr.attrValueList"
                         :key="index"
+                        @click="attrHandler(attr, attrValue)"
                     >
                         <a>{{ attrValue }}</a>
                     </li>
@@ -60,6 +61,10 @@ export default {
         trademarkHandler(trademark) {
             // 传给父组件的回调函数trademarkInfo，并传递一个叫trademark的数据
             this.$emit("trademarkInfo", trademark);
+        },
+        attrHandler(attr, attrValue) {
+            // 传给父组件的回调函数attrInfo，并传递attr和attrValue这两个数据
+            this.$emit("attrInfo", attr, attrValue);
         },
     },
 };

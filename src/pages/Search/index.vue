@@ -28,11 +28,25 @@
                             {{ searchParams.trademark.split(":")[1]
                             }}<i @click="removeTrademark">×</i>
                         </li>
+                        <!-- 下面是SearchSelector组件中售卖属性的面包屑 -->
+                        <!-- 因为这儿的props是个数组，所以不能用v-if了，得用v-for了 -->
+                        <!-- 且这儿的removeAttr得传个index，即传个序号，的参，仍是因为这儿的props是个数组 -->
+                        <li
+                            class="with-x"
+                            v-for="(attrValue, index) in searchParams.props"
+                            :key="index"
+                        >
+                            {{ attrValue.split(":")[1]
+                            }}<i @click="removeAttr(index)">×</i>
+                        </li>
                     </ul>
                 </div>
 
-                <!-- 这个自定义事件是为了实现子组件SearchSelector向父组件Search传参用 -->
-                <SearchSelector @trademarkInfo="trademarkInfo" />
+                <!-- 这些个自定义事件是为了实现子组件SearchSelector向父组件Search传参用 -->
+                <SearchSelector
+                    @trademarkInfo="trademarkInfo"
+                    @attrInfo="attrInfo"
+                />
 
                 <!--details-->
                 <div class="details clearfix">
@@ -230,11 +244,36 @@ export default {
             this.searchParams.trademark = "";
             this.getData();
         },
+        removeAttr(index) {
+            // splice第一个index表示从哪里开始删，第二个参数表示从index处开始，往后删几个
+            this.searchParams.props.splice(index, 1);
+            this.getData();
+        },
         // 实现子组件SearchSelector向父组件Search传参用的自定义事件@trademarkInfo的回调函数
         // 接收子组件传来的叫trademark的数据
         trademarkInfo(trademark) {
             // 迎合人规定的trademark数据的格式： ID:NAME
             this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+            // 弄完后重新请求数据
+            this.getData();
+        },
+        // 实现子组件SearchSelector向父组件Search传参用的自定义事件@attrInfo的回调函数
+        // 接收子组件传来的叫attr和attrValue的数据
+        attrInfo(attr, attrValue) {
+            /* 迎合人规定的props数据的格式：[属性ID:属性值:属性名]，如：[123:安卓手机:手机系统]
+            其中属性ID和属性名可在v-for attrsList得到的attr中得到，属性值在v-forattrsList得到的attrValue中得到 */
+            /* 这儿不同于上面的trademarkInfo中的trademark，因为trademark是个字符串，赋值的话直接等号就行了，而这儿的
+            props是个数组，数组中可能不止一个元素，所以不能用等号。向数组中添加元素的话，要用push方法 */
+            // 且这里要加一个数组去重的if，否则你同时点一个的话，面包屑该有重复了
+            if (
+                this.searchParams.props.indexOf(
+                    `${attr.attrId}:${attrValue}:${attr.attrName}`
+                )
+            ) {
+                this.searchParams.props.push(
+                    `${attr.attrId}:${attrValue}:${attr.attrName}`
+                );
+            }
             // 弄完后重新请求数据
             this.getData();
         },
