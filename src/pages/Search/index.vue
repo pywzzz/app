@@ -141,7 +141,14 @@
                             </li>
                         </ul>
                     </div>
-                    <Pagination></Pagination>
+                    <!-- pageNo代表当前是第几页，pageSize表示一页多少数据，total表示数据总数，continues分页器那儿连续显示几个页码 -->
+                    <!-- 这些数据会传给子组件Pagination -->
+                    <Pagination
+                        :pageNo="26"
+                        :pageSize="3"
+                        :total="90"
+                        :continues="5"
+                    ></Pagination>
                 </div>
             </div>
         </div>
