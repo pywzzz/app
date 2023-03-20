@@ -8,9 +8,12 @@ import store from "@/store";
 import TypeNav from "@/components/TypeNav";
 // 下面两行将轮播图部分注册成组件且，为个全局的组件
 import Carousel from "@/components/Carousel";
+// 引入分页器这个全局组件
+import Pagination from "@/components/Pagination";
 // 第一个参数是全局组件的名字，第二个是标明哪一个组件
 Vue.component(TypeNav.name, TypeNav);
 Vue.component(Carousel.name, Carousel);
+Vue.component(Pagination.name, Pagination);
 // mock这东西本身就不用对外暴露，所以在引入时直接这么土味引入就行了
 import "@/mock/mockServe";
 // 直接在这儿引入，因为有不止一个组件（至少目前ListContainer和Floor都要用）要用这东西，所以别在组件内引了
