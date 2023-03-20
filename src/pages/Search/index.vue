@@ -53,23 +53,41 @@
                     <div class="sui-navbar">
                         <div class="navbar-inner filter">
                             <ul class="sui-nav">
-                                <li class="active">
-                                    <a href="#">综合</a>
+                                <!-- active样式效果为背景高亮，表示选中 -->
+                                <!-- changeOrder的形参，1代表综合排序，2代表价格排序 -->
+                                <li
+                                    :class="{ active: isOne }"
+                                    @click="changeOrder('1')"
+                                >
+                                    <!-- iconfont这个class是上下箭头共用的。icon-UP和icon-DOWN分别对应上下箭头 -->
+                                    <a
+                                        >综合<span
+                                            v-show="isOne"
+                                            class="iconfont"
+                                            :class="{
+                                                'icon-UP': isAsc,
+                                                'icon-DOWN': isDesc,
+                                            }"
+                                        ></span
+                                    ></a>
                                 </li>
-                                <li>
-                                    <a href="#">销量</a>
-                                </li>
-                                <li>
-                                    <a href="#">新品</a>
-                                </li>
-                                <li>
-                                    <a href="#">评价</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬆</a>
-                                </li>
-                                <li>
-                                    <a href="#">价格⬇</a>
+                                <!-- active样式效果为背景高亮，表示选中 -->
+                                <!-- changeOrder的形参，1代表综合排序，2代表价格排序 -->
+                                <li
+                                    :class="{ active: isTwo }"
+                                    @click="changeOrder('2')"
+                                >
+                                    <!-- iconfont这个class是上下箭头共用的。icon-UP和icon-DOWN分别对应上下箭头 -->
+                                    <a
+                                        >价格<span
+                                            v-show="isTwo"
+                                            class="iconfont"
+                                            :class="{
+                                                'icon-UP': isAsc,
+                                                'icon-DOWN': isDesc,
+                                            }"
+                                        ></span
+                                    ></a>
                                 </li>
                             </ul>
                         </div>
@@ -184,8 +202,9 @@ export default {
                 //里面放的是筛选商品的那些条件，比如内存、系统什么的
                 props: [],
                 // -------------------------------
-                //这是排序的参数，用一个数字代表升序降序什么的
-                order: "",
+                //这是排序的参数,1代表按综合排序，2代表按价格排序。desc代表降序，asc代表升序
+                //默认上去是 1:desc ,即综合降序排序
+                order: "1:desc",
                 //这是让分页器用的，代表当前是第几页
                 pageNo: 1,
                 //代表一页展示多少个数据
@@ -199,6 +218,22 @@ export default {
     },
     computed: {
         ...mapGetters(["goodsList"]),
+        // 配合order参数来控制是综合排序还是价格排序
+        isOne() {
+            return this.searchParams.order.indexOf("1") != -1;
+        },
+        // 配合order参数来控制是综合排序还是价格排序
+        isTwo() {
+            return this.searchParams.order.indexOf("2") != -1;
+        },
+        // 配合order参数来控制是升序还是降序
+        isAsc() {
+            return this.searchParams.order.indexOf("asc") != -1;
+        },
+        // 配合order参数来控制是升序还是降序
+        isDesc() {
+            return this.searchParams.order.indexOf("desc") != -1;
+        },
     },
     methods: {
         getData() {
@@ -274,6 +309,25 @@ export default {
                     `${attr.attrId}:${attrValue}:${attr.attrName}`
                 );
             }
+            // 弄完后重新请求数据
+            this.getData();
+        },
+        // 改变排序相关
+        changeOrder(flag) {
+            let newOrder = "";
+            // order的数据格式是 Flag:Sort ，如 1:desc 代表综合降序排序
+            let originFlag = this.searchParams.order.split(":")[0];
+            let originSort = this.searchParams.order.split(":")[1];
+            if (flag == originFlag) {
+                // 如果重复点同一个按钮，则应该在asc和desc间切换，而Flag不变
+                newOrder = `${originFlag}:${
+                    originSort == "desc" ? "asc" : "desc"
+                }`;
+            } else {
+                // 否则，即不是同一个按钮，则传入新的Flag，然后默认都改成desc，即降序
+                newOrder = `${flag}:${"desc"}`;
+            }
+            this.searchParams.order = newOrder;
             // 弄完后重新请求数据
             this.getData();
         },
