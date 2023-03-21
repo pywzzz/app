@@ -25,7 +25,8 @@
                 <!-- 左侧放大镜区域 -->
                 <div class="previewWrap">
                     <!--放大镜效果-->
-                    <Zoom />
+                    <!-- 向子组件Zoom传参 -->
+                    <Zoom :skuImageList="skuImageList" />
                     <!-- 小图列表 -->
                     <ImageList />
                 </div>
@@ -389,6 +390,10 @@ export default {
     // 获取仓库中的数据
     computed: {
         ...mapGetters(["categoryView", "skuInfo"]),
+        skuImageList() {
+            // 这儿也是类比search仓库之解决因为undefined导致的报红
+            return this.skuInfo.skuImageList || [];
+        },
     },
 };
 </script>

@@ -1,9 +1,13 @@
 <template>
     <div class="spec-preview">
-        <img src="../images/s1.png" />
+        <!-- 这个是轮播图框中的图 -->
+        <!-- 默认展示第一张，故 skuImageList[0] -->
+        <img :src="imgObj.imgUrl" />
         <div class="event"></div>
         <div class="big">
-            <img src="../images/s1.png" />
+            <!-- 这个是放大镜放大后展示的图 -->
+            <!-- 默认展示第一张，故 skuImageList[0]  -->
+            <img :src="imgObj.imgUrl" />
         </div>
         <div class="mask"></div>
     </div>
@@ -12,6 +16,14 @@
 <script>
 export default {
     name: "Zoom",
+    // 收到父组件Detail传来的参数
+    props: ["skuImageList"],
+    computed: {
+        imgObj() {
+            // 这儿也是类比search仓库之解决因为undefined导致的报红
+            return this.skuImageList[0] || {};
+        },
+    },
 };
 </script>
 
