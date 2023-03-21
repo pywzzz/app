@@ -6,6 +6,7 @@ Vue.use(Vuex);
 // 引入各个小仓库
 import home from "./home";
 import search from "./search";
+import detail from "./detail";
 
 // 对外暴露Store类的一个实例对象
 export default new Vuex.Store({
@@ -13,5 +14,6 @@ export default new Vuex.Store({
     modules: {
         home,
         search,
+        detail,
     },
 });

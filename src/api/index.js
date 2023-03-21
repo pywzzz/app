@@ -20,6 +20,11 @@ export const reqCategoryList = () =>
 export const reqGetSearchInfo = (params) =>
     requests({ url: "/list", method: "post", data: params });
 
+// 获取Detail组件的相关数据
+// 获取的形参skuId是params参数，接收后向相应的url请求数据
+export const reqGoodsInfo = (skuId) =>
+    requests({ url: `/item/${skuId}`, method: "get" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 
