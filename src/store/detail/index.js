@@ -29,6 +29,9 @@ const getters = {
     skuInfo(state) {
         return state.goodsInfo.skuInfo || {};
     },
+    spuSaleAttrList(state) {
+        return state.goodsInfo.spuSaleAttrList || [];
+    },
 };
 
 // 对外暴露Store类的一个实例对象
