@@ -101,9 +101,10 @@
                             >
                                 <div class="list-wrap">
                                     <div class="p-img">
-                                        <a href="item.html" target="_blank"
+                                        <!-- 带着 good.id 这个params参数去router-link -->
+                                        <router-link :to="`/detail/${good.id}`"
                                             ><img :src="good.defaultImg"
-                                        /></a>
+                                        /></router-link>
                                     </div>
                                     <div class="price">
                                         <strong>

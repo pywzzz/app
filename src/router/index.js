@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Search from "@/pages/Search";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
+import Detail from "@/pages/Detail";
 // 配置路由
 export default new VueRouter({
     routes: [
@@ -26,6 +27,12 @@ export default new VueRouter({
             所以实际的地址栏上会显示 localhost:8080/#/home/?canshu=444 ，且你的路由也并不会跳转 */
             path: "/search/:keyword?",
             component: Search,
+            meta: { isShow: true },
+        },
+        {
+            // 从Search跳转到相应的Detail要提供skuid这个params参数
+            path: "/detail/:skuid",
+            component: Detail,
             meta: { isShow: true },
         },
         {
