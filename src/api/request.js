@@ -3,6 +3,8 @@ import axios from "axios";
 // 引入进度条及其样式
 import nprogress from "nprogress";
 import "nprogress/nprogress.css";
+// 引入store，从而用里面存的uuid_token这个数据
+import store from "@/store";
 
 /* requests是axios的实例对象
 创建一个实例对象的好处就是可以对axios进行一些配置 */
@@ -20,6 +22,10 @@ const requests = axios.create({
 requests.interceptors.request.use((config) => {
     // 进度条开始
     nprogress.start();
+    if (store.state.detail.uuid_token) {
+        // 在请求头中，加个叫userTempId（这个字段名应和后台相呼应）的字段，用来传uuid_token这个数据
+        config.headers.userTempId = store.state.detail.uuid_token;
+    }
     // 这个config是拦截器的一个配置对象，它的一个叫headers的属性可以让我们拿到请求头
     return config;
 });
