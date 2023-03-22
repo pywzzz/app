@@ -116,9 +116,28 @@
                         </div>
                         <div class="cartWrap">
                             <div class="controls">
-                                <input autocomplete="off" class="itxt" />
-                                <a href="javascript:" class="plus">+</a>
-                                <a href="javascript:" class="mins">-</a>
+                                <!-- changeSkuNum用于管理用户在购买数量中的非法输入 -->
+                                <input
+                                    autocomplete="off"
+                                    class="itxt"
+                                    v-model="skuNum"
+                                    @change="changeSkuNum"
+                                />
+                                <a
+                                    href="javascript:"
+                                    class="plus"
+                                    @click="skuNum++"
+                                    >+</a
+                                >
+                                <!-- skuNum最低减到1就不能再减了 -->
+                                <a
+                                    href="javascript:"
+                                    class="mins"
+                                    @click="
+                                        skuNum > 1 ? skuNum-- : (skuNum = 1)
+                                    "
+                                    >-</a
+                                >
                             </div>
                             <div class="add">
                                 <a href="javascript:">加入购物车</a>
@@ -381,7 +400,12 @@ import { mapGetters } from "vuex";
 
 export default {
     name: "Detail",
-
+    data() {
+        return {
+            // 用户在商品详情界面购买商品的数量
+            skuNum: 1,
+        };
+    },
     components: {
         ImageList,
         Zoom,
@@ -408,6 +432,18 @@ export default {
             });
             // 再把刚你自己点的saleAttrValue的sChecked置为1
             saleAttrValue.isChecked = 1;
+        },
+        // 用于管理用户在购买数量中的非法输入
+        changeSkuNum(event) {
+            // 文本乘数字的话结果是NaN，从而用上了下面的isNaN来做相关判断
+            let value = event.target.value * 1;
+            // 如果输入的为文本或输入的值小于1
+            if (isNaN(value) || value < 1) {
+                this.skuNum = 1;
+            } else {
+                // 如果输入的为小数则取其整数部分
+                this.skuNum = parseInt(value);
+            }
         },
     },
 };
