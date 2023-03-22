@@ -456,8 +456,16 @@ export default {
                     // skuNum就是在上面data中定义的那个skuNum
                     skuNum: this.skuNum,
                 });
+                // 这儿用会话存储来存skuInfo这种比较复杂的参数，会话存储存的数据不是持久化的，会随着会话的消失而消失
+                // 本地存储和会话存储存的数据都默认是字符串形式，所以这儿得用JSON.stringify将对象转化为字符串
+                // 第一个参数是个自定义的名字，第二个是SKUINFO这个key对应的value
+                sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo));
                 // 成功的话跳转到AddCartSuccess组件
-                this.$router.push({ name: "addcartsuccess" });
+                this.$router.push({
+                    name: "addcartsuccess",
+                    // 用query传skuNum这种简单的参数
+                    query: { skuNum: this.skuNum },
+                });
             } catch (error) {
                 // 失败的话alert一下
                 alert(error.message);
