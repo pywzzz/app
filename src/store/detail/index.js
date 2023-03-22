@@ -1,4 +1,4 @@
-import { reqGoodsInfo } from "@/api";
+import { reqGoodsInfo, reqGetBannerList, reqAddOrUpdateShopCart } from "@/api";
 // 仓库存数据的地方
 const state = {
     // 人的设计的数据的格式是个对象，所以这儿初始值应是个对象
@@ -16,6 +16,20 @@ const actions = {
         let result = await reqGoodsInfo(skuId);
         if (result.code == 200) {
             commit("GETGOODSINFO", result.data);
+        }
+    },
+    // 用于加入购物车的这种操作或者，加入购物车后修改产品个数的这种操作
+    async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
+        let result = await reqAddOrUpdateShopCart(skuId, skuNum);
+        /* 这里，你给人发的skuId，skuNum，是用户输入的，人服务器只需要接收，然后存下来就完事儿了，所以服务器
+        只会返回存成功或存失败的消息，不会返回一些像之前弄的，返回商品信息啥的数据云 */
+        // 所以这儿也不用在mutations里写东西了，因为没返回具体数据
+        if (result.code == 200) {
+            // 存成功的话给你返回个 ok
+            return "ok";
+        } else {
+            // 存失败的话给你返回个 Promise.reject(new Error("fail"))
+            return Promise.reject(new Error("fail"));
         }
     },
 };

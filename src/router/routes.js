@@ -4,6 +4,7 @@ import Search from "@/pages/Search";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import Detail from "@/pages/Detail";
+import AddCartSuccess from "@/pages/AddCartSuccess";
 // 路由配置信息
 export default [
     // 如果path是xxx，则呈现component中写的组件
@@ -28,6 +29,12 @@ export default [
         // 从Search跳转到相应的Detail要提供skuid这个params参数
         path: "/detail/:skuid",
         component: Detail,
+        meta: { isShow: true },
+    },
+    {
+        name: "addcartsuccess",
+        path: "/addcartsuccess",
+        component: AddCartSuccess,
         meta: { isShow: true },
     },
     {

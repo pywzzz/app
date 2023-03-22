@@ -140,7 +140,8 @@
                                 >
                             </div>
                             <div class="add">
-                                <a href="javascript:">加入购物车</a>
+                                <!-- 路由跳转时还要利用addShopCart把相应的跳转过程中要用到的参数传一下 -->
+                                <a @click="addShopCart">加入购物车</a>
                             </div>
                         </div>
                     </div>
@@ -443,6 +444,23 @@ export default {
             } else {
                 // 如果输入的为小数则取其整数部分
                 this.skuNum = parseInt(value);
+            }
+        },
+        async addShopCart() {
+            try {
+                // 在detail仓库的actions中的addOrUpdateShopCart都async和await了，这儿也得async和await
+                // 在detail仓库的actions中的addOrUpdateShopCart，需要skuId和skuNum这两个参数
+                await this.$store.dispatch("addOrUpdateShopCart", {
+                    // skuId这东西，之前在上面的，mounted中用过
+                    skuId: this.$route.params.skuid,
+                    // skuNum就是在上面data中定义的那个skuNum
+                    skuNum: this.skuNum,
+                });
+                // 成功的话跳转到AddCartSuccess组件
+                this.$router.push({ name: "addcartsuccess" });
+            } catch (error) {
+                // 失败的话alert一下
+                alert(error.message);
             }
         },
     },
