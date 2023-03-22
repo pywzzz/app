@@ -5,6 +5,7 @@ import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
+import ShopCart from "@/pages/ShopCart";
 // 路由配置信息
 export default [
     // 如果path是xxx，则呈现component中写的组件
@@ -35,6 +36,11 @@ export default [
         name: "addcartsuccess",
         path: "/addcartsuccess",
         component: AddCartSuccess,
+        meta: { isShow: true },
+    },
+    {
+        path: "/shopcart",
+        component: ShopCart,
         meta: { isShow: true },
     },
     {
