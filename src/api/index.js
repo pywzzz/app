@@ -29,6 +29,10 @@ export const reqGoodsInfo = (skuId) =>
 export const reqAddOrUpdateShopCart = (skuId, skuNum) =>
     requests({ url: `/cart/addToCart/${skuId}/${skuNum}`, method: "post" });
 
+// 获取购物车的相关数据
+export const reqCartList = () =>
+    requests({ url: `/cart/cartList`, method: "get" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 
