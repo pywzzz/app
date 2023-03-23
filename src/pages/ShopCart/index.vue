@@ -33,15 +33,28 @@
                         <span class="price">{{ cart.skuPrice }}</span>
                     </li>
                     <li class="cart-list-con5">
-                        <a href="javascript:void(0)" class="mins">-</a>
+                        <a
+                            href="javascript:void(0)"
+                            class="mins"
+                            @click="handler('reduce', -1, cart)"
+                            >-</a
+                        >
                         <input
                             autocomplete="off"
                             type="text"
                             :value="cart.skuNum"
                             minnum="1"
                             class="itxt"
+                            @change="
+                                handler('change', $event.target.value * 1, cart)
+                            "
                         />
-                        <a href="javascript:void(0)" class="plus">+</a>
+                        <a
+                            href="javascript:void(0)"
+                            class="plus"
+                            @click="handler('add', 1, cart)"
+                            >+</a
+                        >
                     </li>
                     <li class="cart-list-con6">
                         <span class="sum">{{
@@ -115,6 +128,31 @@ export default {
         getData() {
             // 派发actions以得到购物车shopcart的相关数据
             this.$store.dispatch("getCartList");
+        },
+        /* 接口reqAddOrUpdateShopCart收到的${skuId}/${skuNum}这两个参数中，skuId指明
+        产品id，skuNum表示商品数量的变化值，正数代表加多少，负数代表减多少 */
+        // 这儿的num即skuNum，cart用于获取产品id
+        async handler(type, num, cart) {
+            switch (type) {
+                case "add":
+                    num = 1;
+                    break;
+                case "reduce":
+                    num = cart.skuNum > 1 ? -1 : 0;
+                    break;
+                case "change":
+                    num =
+                        isNaN(num) || num < 1 ? 0 : parseInt(num) - cart.skuNum;
+                    break;
+            }
+            try {
+                await this.$store.dispatch("addOrUpdateShopCart", {
+                    skuId: cart.skuId,
+                    skuNum: num,
+                });
+                // 弄完重新获取数据
+                this.getData();
+            } catch (error) {}
         },
     },
 };
