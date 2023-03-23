@@ -37,6 +37,24 @@ const actions = {
             return Promise.reject(new Error("fail"));
         }
     },
+    // 这儿的“删除选中的商品”是借助上面的deleteCartListBySkuId弄的
+    // 先把context中的dispatch和getters解构出来
+    deleteAllCheckedCart({ dispatch, getters }) {
+        let PromiseAll = [];
+        getters.cartList.cartInfoList.forEach((item) => {
+            // 下面的这个 "" 表示什么都不做
+            let promise =
+                item.isChecked == 1
+                    ? dispatch("deleteCartListBySkuId", item.skuId)
+                    : "";
+            // 把得到的每个promise放到PromiseAll这个数组中
+            PromiseAll.push(promise);
+        });
+        // 只有PromiseAll中的数组都为真时，Promise.all才返回true
+        /* 当Promise.all返回true时，说明当中存的每个promise都返回true，即上面的每一个dispatch都
+        成功了，从而呼应ShopCart组件那儿的deleteAllCheckedCart中的await云 */
+        return Promise.all(PromiseAll);
+    },
 };
 // 功能类似计算属性，用于少些写东西
 const getters = {
