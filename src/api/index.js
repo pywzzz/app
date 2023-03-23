@@ -33,6 +33,10 @@ export const reqAddOrUpdateShopCart = (skuId, skuNum) =>
 export const reqCartList = () =>
     requests({ url: `/cart/cartList`, method: "get" });
 
+//用于删除购物车中产品的接口
+export const reqDeleteCartById = (skuId) =>
+    requests({ url: `/cart/deleteCart/${skuId}`, method: "delete" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 

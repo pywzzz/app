@@ -1,4 +1,4 @@
-import { reqCartList } from "@/api";
+import { reqCartList, reqDeleteCartById } from "@/api";
 // 仓库存数据的地方
 const state = {
     cartList: [],
@@ -15,6 +15,16 @@ const actions = {
         let result = await reqCartList();
         if (result.code == 200) {
             commit("GETCARTLIST", result.data);
+        }
+    },
+    // 删除购物车中的产品
+    // 这儿也是就改个服务器数据库，不需要服务器返回数据
+    async deleteCartListBySkuId({ commit }, skuId) {
+        let result = await reqDeleteCartById(skuId);
+        if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
         }
     },
 };
