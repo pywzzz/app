@@ -74,10 +74,12 @@
         </div>
         <div class="cart-tool">
             <div class="select-all">
+                <!-- 这个 && cartInfoList.length > 0 表示列表没东西的话也不勾 -->
                 <input
                     class="chooseAll"
                     type="checkbox"
-                    :checked="isAllChecked"
+                    :checked="isAllChecked && cartInfoList.length > 0"
+                    @change="updateAllCartChecked"
                 />
                 <span>全选</span>
             </div>
@@ -191,6 +193,16 @@ export default {
                 this.getData();
             } catch (error) {
                 alter(error.message);
+            }
+        },
+        async updateAllCartChecked(event) {
+            try {
+                // 接口要求的就是输入string类型的1或0，所加了个引号
+                let isChecked = event.target.checked ? "1" : "0";
+                await this.$store.dispatch("updateAllCartIsChecked", isChecked);
+                this.getData();
+            } catch (error) {
+                alert(error.message);
             }
         },
     },

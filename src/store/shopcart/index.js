@@ -55,6 +55,18 @@ const actions = {
         成功了，从而呼应ShopCart组件那儿的deleteAllCheckedCart中的await云 */
         return Promise.all(PromiseAll);
     },
+    updateAllCartIsChecked({ dispatch, state }, isChecked) {
+        let PromiseAll = [];
+        // 这儿的cartList[0]是因为人数据库设计的是cartList是个数组，然后信息都在第0个元素中
+        state.cartList[0].cartInfoList.forEach((item) => {
+            let promise = dispatch("updateCheckedBySkuId", {
+                skuId: item.skuId,
+                isChecked,
+            });
+            PromiseAll.push(promise);
+        });
+        return Promise.all(PromiseAll);
+    },
 };
 // 功能类似计算属性，用于少些写东西
 const getters = {
