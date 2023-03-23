@@ -1,12 +1,17 @@
-import { reqGetCode, reqUserRegister } from "@/api";
+import { reqGetCode, reqUserLogin, reqUserRegister } from "@/api";
 // 仓库存数据的地方
 const state = {
     code: "",
+    // vuex的数据不是持久化存储
+    token: "",
 };
 // 修改state的唯一地方
 const mutations = {
     GETCODE(state, code) {
         state.code = code;
+    },
+    USERLOGIN(state, token) {
+        state.token = token;
     },
 };
 // 书写业务逻辑，处理异步云
@@ -25,6 +30,16 @@ const actions = {
     async userRegister({ commit }, user) {
         let result = await reqUserRegister(user);
         if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
+        }
+    },
+    // 用户登录
+    async userLogin({ commit }, data) {
+        let result = await reqUserLogin(data);
+        if (result.code == 200) {
+            commit("USERLOGIN", result.data.token);
             return "ok";
         } else {
             return Promise.reject(new Error("fail"));

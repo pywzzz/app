@@ -49,6 +49,10 @@ export const reqGetCode = (phone) =>
 export const reqUserRegister = (data) =>
     requests({ url: "/user/passport/register", data, method: "post" });
 
+// 用户登录
+export const reqUserLogin = (data) =>
+    requests({ url: "/user/passport/login", data, method: "post" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 

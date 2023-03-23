@@ -14,17 +14,22 @@
                     </ul>
 
                     <div class="content">
-                        <form action="##">
+                        <form>
                             <div class="input-text clearFix">
                                 <span></span>
                                 <input
                                     type="text"
                                     placeholder="邮箱/用户名/手机号"
+                                    v-model="phone"
                                 />
                             </div>
                             <div class="input-text clearFix">
                                 <span class="pwd"></span>
-                                <input type="text" placeholder="请输入密码" />
+                                <input
+                                    type="password"
+                                    placeholder="请输入密码"
+                                    v-model="password"
+                                />
                             </div>
                             <div class="setting clearFix">
                                 <label class="checkbox inline">
@@ -38,7 +43,10 @@
                                 </label>
                                 <span class="forget">忘记密码？</span>
                             </div>
-                            <button class="btn">登&nbsp;&nbsp;录</button>
+                            <!-- 利用prevent将外面包的那个form的默认事件禁止 -->
+                            <button class="btn" @click.prevent="userLogin">
+                                登&nbsp;&nbsp;录
+                            </button>
                         </form>
 
                         <div class="call clearFix">
@@ -79,6 +87,28 @@
 <script>
 export default {
     name: "Login",
+    data() {
+        return {
+            phone: "",
+            password: "",
+        };
+    },
+    methods: {
+        async userLogin() {
+            try {
+                const { phone, password } = this;
+                phone &&
+                    password &&
+                    (await this.$store.dispatch("userLogin", {
+                        phone,
+                        password,
+                    }));
+                this.$router.push("/home");
+            } catch (error) {
+                alert(error.message);
+            }
+        },
+    },
 };
 </script>
 
