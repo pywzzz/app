@@ -21,6 +21,7 @@
                             type="checkbox"
                             name="chk_list"
                             :checked="cart.isChecked == 1"
+                            @change="updateChecked(cart, $event)"
                         />
                     </li>
                     <li class="cart-list-con2">
@@ -101,6 +102,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import throttle from "lodash/throttle";
 export default {
     name: "ShopCart",
     mounted() {
@@ -134,7 +136,8 @@ export default {
         /* 接口reqAddOrUpdateShopCart收到的${skuId}/${skuNum}这两个参数中，skuId指明
         产品id，skuNum表示商品数量的变化值，正数代表加多少，负数代表减多少 */
         // 这儿的num即skuNum，cart用于获取产品id
-        async handler(type, num, cart) {
+        // 这里弄个节流，要不点太快的话，数量可能会被点到0或负数
+        handler: throttle(async function (type, num, cart) {
             switch (type) {
                 case "add":
                     num = 1;
@@ -155,10 +158,26 @@ export default {
                 // 弄完重新获取数据
                 this.getData();
             } catch (error) {}
-        },
+        }, 1000),
         async deleteCartById(cart) {
             try {
                 await this.$store.dispatch("deleteCartListBySkuId", cart.skuId);
+                this.getData();
+            } catch (error) {
+                alter(error.message);
+            }
+        },
+        // 第1个参数用于获取产品id，第2个参数用于获取当前元素的checked属性，看下勾没勾
+        async updateChecked(cart, event) {
+            try {
+                // 因为接口只认1和0，所以这儿得把原本的true或false转为1或0
+                let isChecked = event.target.checked ? "1" : "0";
+                await this.$store.dispatch("updateCheckedBySkuId", {
+                    skuId: cart.skuId,
+                    // kv一致云
+                    isChecked,
+                });
+                // 弄完重新获取数据
                 this.getData();
             } catch (error) {
                 alter(error.message);

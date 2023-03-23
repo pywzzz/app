@@ -37,6 +37,10 @@ export const reqCartList = () =>
 export const reqDeleteCartById = (skuId) =>
     requests({ url: `/cart/deleteCart/${skuId}`, method: "delete" });
 
+// 用于修改购物车中产品的那个“选中”按钮勾还是不勾的接口
+export const reqUpdateCheckedById = (skuId, isChecked) =>
+    requests({ url: `/cart/checkCart/${skuId}/${isChecked}`, method: "get" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 

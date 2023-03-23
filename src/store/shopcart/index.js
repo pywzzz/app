@@ -1,4 +1,4 @@
-import { reqCartList, reqDeleteCartById } from "@/api";
+import { reqCartList, reqDeleteCartById, reqUpdateCheckedById } from "@/api";
 // 仓库存数据的地方
 const state = {
     cartList: [],
@@ -21,6 +21,16 @@ const actions = {
     // 这儿也是就改个服务器数据库，不需要服务器返回数据
     async deleteCartListBySkuId({ commit }, skuId) {
         let result = await reqDeleteCartById(skuId);
+        if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
+        }
+    },
+    // 修改购物车中产品的那个“选中”按钮勾还是不勾
+    // 这儿也是就改个服务器数据库，不需要服务器返回数据
+    async updateCheckedBySkuId({ commit }, { skuId, isChecked }) {
+        let result = await reqUpdateCheckedById(skuId, isChecked);
         if (result.code == 200) {
             return "ok";
         } else {
