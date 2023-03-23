@@ -185,7 +185,8 @@ export default {
                     width: 25%;
 
                     .list-item {
-                        background-image: url(./images/icons.png);
+                        // 这个@是你自定义的src别名，在css中用时要在前面加 ~ 这个符号
+                        background-image: url(~@/assets/images/icons.png);
                         width: 61px;
                         height: 40px;
                         display: block;
