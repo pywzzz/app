@@ -38,6 +38,8 @@ export default {
     // 所以在Home组件中派发
     mounted() {
         this.$store.dispatch("getFloorList");
+        // 登录后拿着token获取用户数据
+        this.$store.dispatch("getUserInfo");
     },
     computed: {
         ...mapState({

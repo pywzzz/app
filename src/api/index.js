@@ -53,6 +53,11 @@ export const reqUserRegister = (data) =>
 export const reqUserLogin = (data) =>
     requests({ url: "/user/passport/login", data, method: "post" });
 
+// 带着登录时得到的token获取用户信息
+// token这个参数通过请求头传入，而不是在这儿传入
+export const reqUserInfo = () =>
+    requests({ url: "/user/passport/auth/getUserInfo", method: "get" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 
