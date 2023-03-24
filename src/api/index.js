@@ -52,6 +52,14 @@ export const reqAddressInfo = () =>
 export const reqOrderInfo = () =>
     requests({ url: "/order/auth/trade", method: "get" });
 
+// 用于结算界面提交订单后给服务器传相关数据
+export const reqSubmitOrder = (tradeNo, data) =>
+    requests({
+        url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        data,
+        method: "post",
+    });
+
 // 获取验证码
 export const reqGetCode = (phone) =>
     requests({ url: `/user/passport/sendCode/${phone}`, method: "get" });
