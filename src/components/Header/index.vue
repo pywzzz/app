@@ -16,7 +16,7 @@
                     </p>
                     <p v-else>
                         <a>{{ userName }}</a
-                        ><a class="register">退出登录</a>
+                        ><a class="register" @click="logout">退出登录</a>
                     </p>
                 </div>
                 <div class="typeList">
@@ -85,6 +85,14 @@ export default {
             location.query = this.$route.query;
             // 如果把 let location 中的一堆写到push({})中，那这是路由传递参数的对象写法
             this.$router.push(location);
+        },
+        async logout() {
+            try {
+                // 如果退出成功
+                await this.$store.dispatch("userLogout");
+                // 就回到首页
+                this.$router.push("/home");
+            } catch (error) {}
         },
     },
     mounted() {

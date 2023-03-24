@@ -58,6 +58,10 @@ export const reqUserLogin = (data) =>
 export const reqUserInfo = () =>
     requests({ url: "/user/passport/auth/getUserInfo", method: "get" });
 
+// 退出登录
+export const reqLogout = () =>
+    requests({ url: "/user/passport/logout", method: "get" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 

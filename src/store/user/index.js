@@ -1,5 +1,11 @@
-import { reqGetCode, reqUserInfo, reqUserLogin, reqUserRegister } from "@/api";
-import { getToken, setToken } from "@/utils/token";
+import {
+    reqGetCode,
+    reqLogout,
+    reqUserInfo,
+    reqUserLogin,
+    reqUserRegister,
+} from "@/api";
+import { getToken, removeToken, setToken } from "@/utils/token";
 // 仓库存数据的地方
 const state = {
     code: "",
@@ -20,6 +26,13 @@ const mutations = {
     },
     GETUSERINFO(state, userInfo) {
         state.userInfo = userInfo;
+    },
+    CLEAR(state) {
+        // 把仓库中的数据清除
+        state.token = "";
+        state.userInfo = {};
+        // 将本地存储的token清除
+        removeToken();
     },
 };
 // 书写业务逻辑，处理异步云
@@ -60,6 +73,16 @@ const actions = {
             commit("USERLOGIN", result.data.token);
             // 持久化存储token
             setToken(result.data.token);
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
+        }
+    },
+    // 退出登录
+    async userLogout({ commit }) {
+        let result = await reqLogout();
+        if (result.code == 200) {
+            commit("CLEAR");
             return "ok";
         } else {
             return Promise.reject(new Error("fail"));
