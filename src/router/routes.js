@@ -7,6 +7,7 @@ import Detail from "@/pages/Detail";
 import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
+import Pay from "@/pages/Pay";
 // 路由配置信息
 export default [
     // 如果path是xxx，则呈现component中写的组件
@@ -47,6 +48,11 @@ export default [
     {
         path: "/trade",
         component: Trade,
+        meta: { isShow: false },
+    },
+    {
+        path: "/pay",
+        component: Pay,
         meta: { isShow: false },
     },
     {
