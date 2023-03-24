@@ -60,6 +60,10 @@ export const reqSubmitOrder = (tradeNo, data) =>
         method: "post",
     });
 
+// 拿着订单号获取支付信息
+export const reqPayInfo = (orderId) =>
+    requests({ url: `payment/weixin/createNative/${orderId}`, method: "get" });
+
 // 获取验证码
 export const reqGetCode = (phone) =>
     requests({ url: `/user/passport/sendCode/${phone}`, method: "get" });

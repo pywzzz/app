@@ -68,6 +68,7 @@
                 <textarea
                     placeholder="建议留言前先与商家沟通确认"
                     class="remarks-cont"
+                    v-model="msg"
                 ></textarea>
             </div>
             <div class="line"></div>
@@ -106,7 +107,7 @@
             </div>
         </div>
         <div class="sub clearFix">
-            <router-link class="subBtn" to="/pay">提交订单</router-link>
+            <a class="subBtn" @click="submitOrder">提交订单</a>
         </div>
     </div>
 </template>
@@ -115,6 +116,14 @@
 import { mapState } from "vuex";
 export default {
     name: "Trade",
+    data() {
+        return {
+            // 给卖家的留言
+            msg: "",
+            // 接口返回的订单号
+            orderId: "",
+        };
+    },
     computed: {
         ...mapState({
             addressInfo: (state) => state.trade.address,
@@ -131,6 +140,32 @@ export default {
                 item.isDefault = 0;
                 address.isDefault = 1;
             });
+        },
+        async submitOrder() {
+            let { tradeNo } = this.orderInfo;
+            let data = {
+                // 付款人的名字
+                consignee: this.userDefaulAddress.consignee,
+                // 付款人的手机号
+                consigneeTel: this.userDefaulAddress.phoneNum,
+                // 付款人收货地址
+                deliveryAddress: this.userDefaulAddress.fullAddress,
+                // 支付方式都是在线支付
+                paymentWay: "ONLINE",
+                // 买家留言
+                orderComment: this.msg,
+                // 购物车商品信息
+                orderDetailList: this.orderInfo.detailArrayList,
+            };
+            let result = await this.$API.reqSubmitOrder(tradeNo, data);
+            if (result.code == 200) {
+                // 成功的话接口会返回一个叫data的订单号
+                this.orderId = result.data;
+                // 路由跳转的同时用query参数的形式传Pay组件所需的orderId这个数据
+                this.$router.push("/pay?orderId=" + this.orderId);
+            } else {
+                alert(result.data);
+            }
         },
     },
     mounted() {

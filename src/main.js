@@ -19,6 +19,8 @@ import "@/mock/mockServe";
 // 直接在这儿引入，因为有不止一个组件（至少目前ListContainer和Floor都要用）要用这东西，所以别在组件内引了
 // 这儿import的是样式，样式没有暴露，所以和上面的mock一样直接import就行了
 import "swiper/css/swiper.css";
+// 统一引入接口
+import * as API from "@/api";
 
 Vue.config.productionTip = false;
 new Vue({
@@ -27,6 +29,7 @@ new Vue({
     // 这儿主要用于Search和Header这两个兄弟组件的通信
     beforeCreate() {
         Vue.prototype.$bus = this;
+        Vue.prototype.$API = API;
     },
     //es6的kv一致省略v的写法
     // 引入router这个新的配置项
