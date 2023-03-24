@@ -41,6 +41,17 @@ export const reqDeleteCartById = (skuId) =>
 export const reqUpdateCheckedById = (skuId, isChecked) =>
     requests({ url: `/cart/checkCart/${skuId}/${isChecked}`, method: "get" });
 
+// 用于获取在结算界面用到的用户地址信息
+export const reqAddressInfo = () =>
+    requests({
+        url: "/user/userAddress/auth/findUserAddressList",
+        method: "get",
+    });
+
+// 用于获取在结算界面用到的商品列表
+export const reqOrderInfo = () =>
+    requests({ url: "/order/auth/trade", method: "get" });
+
 // 获取验证码
 export const reqGetCode = (phone) =>
     requests({ url: `/user/passport/sendCode/${phone}`, method: "get" });
