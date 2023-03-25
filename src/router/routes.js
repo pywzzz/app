@@ -27,14 +27,16 @@ export default [
         path: "/center",
         component: Center,
         meta: { isShow: true },
+        // 访问 /center 会重定向到 /center/myorder
+        redirect: "/center/myorder",
         // 二级路由
         children: [
             {
-                path: "/myorder",
+                path: "myorder",
                 component: Myorder,
             },
             {
-                path: "/grouporder",
+                path: "grouporder",
                 component: GroupOrder,
             },
         ],
