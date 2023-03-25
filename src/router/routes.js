@@ -9,6 +9,10 @@ import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
 import PaySuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
+// 引入二级路由组件
+import Myorder from "@/pages/Center/MyOrder";
+import GroupOrder from "@/pages/Center/GroupOrder";
 // 路由配置信息
 export default [
     // 如果path是xxx，则呈现component中写的组件
@@ -18,6 +22,22 @@ export default [
         path: "/home",
         component: Home,
         meta: { isShow: true },
+    },
+    {
+        path: "/center",
+        component: Center,
+        meta: { isShow: true },
+        // 二级路由
+        children: [
+            {
+                path: "/myorder",
+                component: Myorder,
+            },
+            {
+                path: "/grouporder",
+                component: GroupOrder,
+            },
+        ],
     },
     {
         name: "search",
