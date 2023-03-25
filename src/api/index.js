@@ -64,6 +64,13 @@ export const reqSubmitOrder = (tradeNo, data) =>
 export const reqPayInfo = (orderId) =>
     requests({ url: `payment/weixin/createNative/${orderId}`, method: "get" });
 
+// 获取订单的支付状态
+export const reqPayStatus = (orderId) =>
+    requests({
+        url: `/payment/weixin/queryPayStatus/${orderId}`,
+        method: "get",
+    });
+
 // 获取验证码
 export const reqGetCode = (phone) =>
     requests({ url: `/user/passport/sendCode/${phone}`, method: "get" });

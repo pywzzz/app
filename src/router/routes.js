@@ -8,6 +8,7 @@ import AddCartSuccess from "@/pages/AddCartSuccess";
 import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
+import PaySuccess from "@/pages/PaySuccess";
 // 路由配置信息
 export default [
     // 如果path是xxx，则呈现component中写的组件
@@ -53,6 +54,11 @@ export default [
     {
         path: "/pay",
         component: Pay,
+        meta: { isShow: false },
+    },
+    {
+        path: "/paysuccess",
+        component: PaySuccess,
         meta: { isShow: false },
     },
     {

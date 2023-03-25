@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
 export default {
     name: "Pay",
     data() {
@@ -124,15 +125,59 @@ export default {
                 this.payInfo = result.data;
             }
         },
-        open() {
-            this.$alert("<strong>这是 <i>HTML</i> 片段</strong>", "HTML 片段", {
+        async open() {
+            let url = await QRCode.toDataURL(this.payInfo.codeUrl);
+            this.$alert(`<img src=${url} />`, "请使用微信支付", {
                 dangerouslyUseHTMLString: true,
                 center: true,
                 showClose: false,
                 showCancelButton: true,
                 confirmButtonText: "支付成功",
                 cancelButtonText: "支付出现问题",
+                // 第一个参数表示点的是取消还是确认按钮；第二个参数是这儿的vm实例也即this；第三个参数用于关闭弹窗的函数
+                beforeClose: (type, instance, done) => {
+                    if (type == "cancel") {
+                        alert("请联系管理员");
+                        // 清除定时器
+                        clearInterval(instance.timer);
+                        instance.timer = null;
+                        // 关闭弹窗
+                        done();
+                    } else {
+                        if (instance.code == 200) {
+                            // 清除定时器
+                            clearInterval(instance.timer);
+                            instance.timer = null;
+                            // 关闭弹窗
+                            done();
+                            // 路由跳转
+                            instance.$router.push("/paysuccess");
+                        }
+                    }
+                },
             });
+            // 如果没有定时器
+            if (!this.timer) {
+                // 开启一个定时器
+                this.timer = setInterval(async () => {
+                    // 使用reqPayStatus向接口请求用户的支付状态
+                    let result = await this.$API.reqPayStatus(this.orderId);
+                    // 200表示支付成功
+                    if (result.code == 200) {
+                        // 清除定时器
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        // 把支付成功后接口返回的code保存
+                        /* 这一行表示在this中新声明一个叫code的变量，值为result.code，就，code不是
+                        原本就有的，是你自己声明的罢 */
+                        this.code = result.code;
+                        // 关闭element-ui的这个弹出框
+                        this.$msgbox.close();
+                        // 路由跳转
+                        this.$router.push("/paysuccess");
+                    }
+                }, 1000);
+            }
         },
     },
     mounted() {
