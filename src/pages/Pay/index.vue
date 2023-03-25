@@ -83,7 +83,7 @@
                 <div class="hr"></div>
 
                 <div class="submit">
-                    <a class="btn">立即支付</a>
+                    <a class="btn" @click="open">立即支付</a>
                 </div>
                 <div class="otherpay">
                     <div class="step-tit">
@@ -123,6 +123,16 @@ export default {
             if (result.code == 200) {
                 this.payInfo = result.data;
             }
+        },
+        open() {
+            this.$alert("<strong>这是 <i>HTML</i> 片段</strong>", "HTML 片段", {
+                dangerouslyUseHTMLString: true,
+                center: true,
+                showClose: false,
+                showCancelButton: true,
+                confirmButtonText: "支付成功",
+                cancelButtonText: "支付出现问题",
+            });
         },
     },
     mounted() {
