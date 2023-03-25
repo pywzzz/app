@@ -92,6 +92,10 @@ export const reqUserInfo = () =>
 export const reqLogout = () =>
     requests({ url: "/user/passport/logout", method: "get" });
 
+// 获取个人中心那儿的“我的订单”那儿的数据
+export const reqMyOrderList = (page, limit) =>
+    requests({ url: `/order/auth/${page}/${limit}`, method: "get" });
+
 // 拿到banner
 export const reqGetBannerList = () => mockRequests.get("/banner");
 
