@@ -103,7 +103,11 @@ export default {
                         phone,
                         password,
                     }));
-                this.$router.push("/home");
+                // redirect这个query参数的值是用户原本想去的地方（trade、center、pay、paysuccess中的某一个）的路径
+                //  || 的语法是，只要 || 前面为true,不管 || 后面是true还是false，均返回||前面的值
+                let toPath = this.$route.query.redirect || "/home";
+                // 登录后跳转到用户最开始想去的地方，而不是生硬地跳转到 /home
+                this.$router.push(toPath);
             } catch (error) {
                 alert(error.message);
             }

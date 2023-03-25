@@ -54,8 +54,21 @@ router.beforeEach(async (to, from, next) => {
         }
         // 如果没有token，即未登录
     } else {
-        // 则均放行
-        next();
+        let toPath = to.path;
+        // trade、center、pay、paysuccess这四个地方不登录的话是不能去的
+        // 这儿的 indexOf("/pay") 包括了pay和paysuccess这两种情况
+        if (
+            toPath.indexOf("/trade") != -1 ||
+            toPath.indexOf("/pay") != -1 ||
+            toPath.indexOf("/center") != -1
+        ) {
+            /* 则跳转到到login页面让用户去登录，同时带一个叫redirect的query参数，其值为用户原本想去的
+            地方，即上面说的trade、center、pay、paysuccess这4个地方的某一个 */
+            next("/login?redirect=" + toPath);
+        } else {
+            // 如果不是trade、center、pay、paysuccess这4个地方，则直接放行
+            next();
+        }
     }
 });
 
