@@ -103,7 +103,7 @@
                                     <div class="p-img">
                                         <!-- 带着 good.id 这个params参数去router-link -->
                                         <router-link :to="`/detail/${good.id}`"
-                                            ><img :src="good.defaultImg"
+                                            ><img v-lazy="good.defaultImg"
                                         /></router-link>
                                     </div>
                                     <div class="price">

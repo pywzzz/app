@@ -23,8 +23,15 @@ import "@/mock/mockServe";
 // 直接在这儿引入，因为有不止一个组件（至少目前ListContainer和Floor都要用）要用这东西，所以别在组件内引了
 // 这儿import的是样式，样式没有暴露，所以和上面的mock一样直接import就行了
 import "swiper/css/swiper.css";
+// 引入图片懒加载插件及一张图片
+import VueLazyload from "vue-lazyload";
+import lazy from "@/assets/lazy.jpg";
 // 统一引入接口
 import * as API from "@/api";
+
+Vue.use(VueLazyload, {
+    loading: lazy,
+});
 
 Vue.config.productionTip = false;
 new Vue({
