@@ -72,11 +72,34 @@ export default [
         path: "/trade",
         component: Trade,
         meta: { isShow: false },
+        // 路由独享守卫只负责，路由跳转至如这儿的 /trade 时的情况，即只对自己负责
+        beforeEnter: (to, from, next) => {
+            // 正常情况下进入 /trade 的上一个页面是 /shopcart
+            if (from.path == "/shopcart") {
+                // 放行
+                next();
+                // 如果不是从 /shopcart 这地方去路由跳转到 /trade 的话
+            } else {
+                // 表示停留在当前页面不跳转，同时url也自动变为 from 这个参的值
+                next(false);
+            }
+        },
     },
     {
         path: "/pay",
         component: Pay,
         meta: { isShow: false },
+        beforeEnter: (to, from, next) => {
+            // 正常情况下进入 /pay 的上一个页面是 /trade
+            if (from.path == "/trade") {
+                // 放行
+                next();
+                // 如果不是从 /trade 这地方去路由跳转到 /pay 的话
+            } else {
+                // 表示停留在当前页面不跳转，同时url也自动变为 from 这个参的值
+                next(false);
+            }
+        },
     },
     {
         path: "/paysuccess",
