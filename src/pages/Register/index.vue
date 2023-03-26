@@ -14,16 +14,26 @@
                     type="text"
                     placeholder="请输入你的手机号"
                     v-model="phone"
+                    name="phone"
+                    v-validate="{ required: true, regex: /^1\d{10}$/ }"
+                    :class="{ invalid: errors.has('phone') }"
                 />
-                <span class="error-msg">错误提示信息</span>
+                <span class="error-msg">{{ errors.first("phone") }}</span>
             </div>
             <div class="content">
                 <label>验证码:</label>
-                <input type="text" placeholder="请输入验证码" v-model="code" />
+                <input
+                    type="text"
+                    placeholder="请输入验证码"
+                    v-model="code"
+                    name="code"
+                    v-validate="{ required: true, regex: /^\d{6}$/ }"
+                    :class="{ invalid: errors.has('code') }"
+                />
                 <button style="width: 100px; height: 30px" @click="getCode">
                     获取验证码
                 </button>
-                <span class="error-msg">错误提示信息</span>
+                <span class="error-msg">{{ errors.first("code") }}</span>
             </div>
             <div class="content">
                 <label>登录密码:</label>
@@ -31,8 +41,14 @@
                     type="password"
                     placeholder="请输入你的登录密码"
                     v-model="password"
+                    name="password"
+                    v-validate="{
+                        required: true,
+                        regex: /^[0-9A-Za-z]{8,20}$/,
+                    }"
+                    :class="{ invalid: errors.has('password') }"
                 />
-                <span class="error-msg">错误提示信息</span>
+                <span class="error-msg">{{ errors.first("password") }}</span>
             </div>
             <div class="content">
                 <label>确认密码:</label>
@@ -40,13 +56,28 @@
                     type="password"
                     placeholder="请输入确认密码"
                     v-model="rePassword"
+                    name="rePassword"
+                    v-validate="{
+                        required: true,
+                        is: password,
+                    }"
+                    :class="{ invalid: errors.has('rePassword') }"
                 />
-                <span class="error-msg">错误提示信息</span>
+                <span class="error-msg">{{ errors.first("rePassword") }}</span>
             </div>
             <div class="controls">
-                <input name="m1" type="checkbox" :checked="agree" />
+                <input
+                    name="agree"
+                    type="checkbox"
+                    :checked="agree"
+                    v-validate="{
+                        required: true,
+                        agree: true,
+                    }"
+                    :class="{ invalid: errors.has('agree') }"
+                />
                 <span>同意协议并注册《尚品汇用户协议》</span>
-                <span class="error-msg">错误提示信息</span>
+                <span class="error-msg">{{ errors.first("agree") }}</span>
             </div>
             <div class="btn">
                 <button @click="userRegister">完成注册</button>
@@ -94,19 +125,20 @@ export default {
             } catch (error) {}
         },
         async userRegister() {
-            try {
-                const { phone, code, password, rePassword } = this;
-                phone &&
-                    code &&
-                    password == rePassword &&
-                    (await this.$store.dispatch("userRegister", {
+            // 如果所有的表单元素均验证成功
+            if (await this.$validator.validateAll()) {
+                // 注册
+                try {
+                    const { phone, code, password, rePassword } = this;
+                    await this.$store.dispatch("userRegister", {
                         phone,
                         code,
                         password,
-                    }));
-                this.$router.push("/login");
-            } catch (error) {
-                alert(error.message);
+                    });
+                    this.$router.push("/login");
+                } catch (error) {
+                    alert(error.message);
+                }
             }
         },
     },

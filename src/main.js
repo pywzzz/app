@@ -26,6 +26,8 @@ import "swiper/css/swiper.css";
 // 引入图片懒加载插件及一张图片
 import VueLazyload from "vue-lazyload";
 import lazy from "@/assets/lazy.jpg";
+// 引入用于表单验证的插件
+import "@/plugins/validate";
 // 统一引入接口
 import * as API from "@/api";
 
