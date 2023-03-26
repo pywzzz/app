@@ -4,6 +4,8 @@ module.exports = defineConfig({
 });
 
 module.exports = {
+    // 让npm在build时不在js文件夹下生成map文件
+    productionSourceMap: false,
     // 关闭eslint
     lintOnSave: false,
     // 配置代理跨域
