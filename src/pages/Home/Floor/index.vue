@@ -27,7 +27,9 @@
                                     {{ keyword }}
                                 </li>
                             </ul>
-                            <img :src="list.imgUrl" />
+                            <img
+                                :src="'http://localhost:8888/api' + list.imgUrl"
+                            />
                         </div>
                         <div class="floorBanner">
                             <!-- 轮播图部分 -->
@@ -36,22 +38,44 @@
                         <div class="split">
                             <span class="floor-x-line"></span>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[0]" />
+                                <img
+                                    :src="
+                                        'http://localhost:8888/api' +
+                                        list.recommendList[0]
+                                    "
+                                />
                             </div>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[1]" />
+                                <img
+                                    :src="
+                                        'http://localhost:8888/api' +
+                                        list.recommendList[1]
+                                    "
+                                />
                             </div>
                         </div>
                         <div class="split center">
-                            <img :src="list.bigImg" />
+                            <img
+                                :src="'http://localhost:8888/api' + list.bigImg"
+                            />
                         </div>
                         <div class="split">
                             <span class="floor-x-line"></span>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[2]" />
+                                <img
+                                    :src="
+                                        'http://localhost:8888/api' +
+                                        list.recommendList[2]
+                                    "
+                                />
                             </div>
                             <div class="floor-conver-pit">
-                                <img :src="list.recommendList[3]" />
+                                <img
+                                    :src="
+                                        'http://localhost:8888/api' +
+                                        list.recommendList[3]
+                                    "
+                                />
                             </div>
                         </div>
                     </div>

@@ -19,7 +19,7 @@ module.exports = {
             "/api": {
                 /* 这儿不用写pathRewrite了，因为你请求的是 gmall-h5-api.atguigu.cn/api/product/getBaseCategoryList ，
                 它里面本来就有个/api，人本来就需要，故 */
-                target: "http://gmall-h5-api.atguigu.cn",
+                target: "http://localhost:8888",
             },
         },
     },

@@ -3,9 +3,6 @@
 // 但假如项目很大，比如有100个模块，它们又连了同一个接口a，若接口a地址变的话，那如果没有统一管理就要逐个修改了，改100次
 import requests from "./request";
 
-// 引入这个mock接口
-import mockRequests from "./mockRequest";
-
 // 别的组件拿到（所以要暴露下）reqCategoryList这个箭头函数，调用后其函数体一执行就可以发请求了
 //这儿的url应该是/api/product/getBaseCategoryList，但因为你在request.js配置了baseURL，所以不用写了就
 //这儿已知/api/product/getBaseCategoryList这个接口是get请求，且无参数
@@ -96,13 +93,9 @@ export const reqLogout = () =>
 export const reqMyOrderList = (page, limit) =>
     requests({ url: `/order/auth/${page}/${limit}`, method: "get" });
 
-// 拿到banner
-export const reqGetBannerList = () => mockRequests.get("/banner");
-
-// 下面是上面代码完整的写法
-/* export const reqCategoryList = () => {
-    return requests({ url: "/product/getBaseCategoryList", method: "get" });
-}; */
+// 获取banner数据
+export const reqGetBannerList = () =>
+    requests({ url: "/banner", method: "get" });
 
 // 获取floor数据
-export const reqFloorList = () => mockRequests.get("/floor");
+export const reqFloorList = () => requests({ url: "/floor", method: "get" });

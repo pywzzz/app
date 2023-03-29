@@ -7,7 +7,9 @@
                 v-for="carousel in list"
                 :key="carousel.id"
             >
-                <img :src="carousel.imgUrl" />
+                <img
+                    :src="'http://localhost:8888/api' + carousel.imgUrl"
+                />
             </div>
         </div>
         <!-- 如果需要分页器 -->

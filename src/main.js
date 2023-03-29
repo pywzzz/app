@@ -18,8 +18,6 @@ Vue.component(Pagination.name, Pagination);
 // 这种是直接挂在原形上的映入方式
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
-// mock这东西本身就不用对外暴露，所以在引入时直接这么土味引入就行了
-import "@/mock/mockServe";
 // 直接在这儿引入，因为有不止一个组件（至少目前ListContainer和Floor都要用）要用这东西，所以别在组件内引了
 // 这儿import的是样式，样式没有暴露，所以和上面的mock一样直接import就行了
 import "swiper/css/swiper.css";
