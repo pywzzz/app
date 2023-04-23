@@ -110,13 +110,18 @@
                 </table>
             </div>
             <div class="choose-order">
-                <Pagination
-                    :pageNo="page"
-                    :pageSize="limit"
+                <el-pagination
+                    style="margin-top: 20px; text-align: center"
+                    :pager-count="7"
+                    :current-page="page"
+                    :page-size="limit"
                     :total="myOrder.total"
-                    :continues="5"
-                    @getPageNo="getPageNo"
-                ></Pagination>
+                    :page-sizes="[5, 10, 20]"
+                    @current-change="handleCurrentChange"
+                    @size-change="handleSizeChange"
+                    layout="prev, pager, next, jumper, -> ,sizes, total"
+                >
+                </el-pagination>
             </div>
         </div>
         <!--猜你喜欢-->
@@ -201,8 +206,12 @@ export default {
                 this.myOrder = result.data;
             }
         },
-        getPageNo(page) {
+        handleCurrentChange(page) {
             this.page = page;
+            this.getData();
+        },
+        handleSizeChange(limit) {
+            this.limit = limit;
             this.getData();
         },
     },

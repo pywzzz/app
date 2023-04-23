@@ -142,16 +142,18 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- pageNo代表当前是第几页，pageSize表示一页多少数据，total表示数据总数，continues分页器那儿连续显示几个页码 -->
-                    <!-- 这些数据会传给子组件Pagination -->
-                    <!-- @getPageNo用于子组件Pagination往父组件Search传数据 -->
-                    <Pagination
-                        :pageNo="searchParams.pageNo"
-                        :pageSize="searchParams.pageSize"
+                    <el-pagination
+                        style="margin-top: 20px; text-align: center"
+                        :pager-count="7"
+                        :current-page="searchParams.pageNo"
+                        :page-size="searchParams.pageSize"
                         :total="total"
-                        :continues="5"
-                        @getPageNo="getPageNo"
-                    ></Pagination>
+                        :page-sizes="[5, 10, 20]"
+                        @current-change="handleCurrentChange"
+                        @size-change="handleSizeChange"
+                        layout="prev, pager, next, jumper, -> ,sizes, total"
+                    >
+                    </el-pagination>
                 </div>
             </div>
         </div>
@@ -190,7 +192,7 @@ export default {
                 //这是让分页器用的，代表当前是第几页
                 pageNo: 1,
                 //代表一页展示多少个数据
-                pageSize: 3,
+                pageSize: 5,
                 // -------------------------------
             },
         };
@@ -312,11 +314,12 @@ export default {
             // 弄完后重新请求数据
             this.getData();
         },
-        // @getPageNo的回调函数，用来收子组件Pagination要传的数据
-        getPageNo(pageNo) {
-            // 用户点击第几页后，数据传到形参pageNo，这儿往searchParams里更新一哈
-            this.searchParams.pageNo = pageNo;
-            // 重新请求数据
+        handleCurrentChange(page) {
+            this.page = page;
+            this.getData();
+        },
+        handleSizeChange(limit) {
+            this.limit = limit;
             this.getData();
         },
     },
