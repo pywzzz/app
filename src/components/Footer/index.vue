@@ -48,13 +48,13 @@
                         <li>夺宝岛</li>
                         <li>DIY装机</li>
                         <li>延保服务</li>
-                        <li>尚品汇E卡</li>
-                        <li>尚品汇通信</li>
+                        <li>超市E卡</li>
+                        <li>超市通信</li>
                     </ul>
                 </div>
                 <div class="footerItem">
                     <h4>帮助中心</h4>
-                    <img src="./images/wx_cz.jpg" />
+                    <img src="./images/wx_cz.jpg"   style="height: 100px; width: 100px"/>
                 </div>
             </div>
             <div class="copyright">
@@ -97,7 +97,7 @@
                     </li>
                     <li>关于我们</li>
                 </ul>
-                <p>地址：北京市昌平区宏福科技园综合楼6层</p>
+                <p>地址：河南省焦作市河南理工大学</p>
                 <p>京ICP备19006430号</p>
             </div>
         </div>
