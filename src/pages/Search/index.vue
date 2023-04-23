@@ -36,7 +36,7 @@
                             v-for="(attrValue, index) in searchParams.props"
                             :key="index"
                         >
-                            {{ attrValue.split(":")[1]
+                            {{ attrValue.split(":")[2]
                             }}<i @click="removeAttr(index)">×</i>
                         </li>
                     </ul>
@@ -274,7 +274,7 @@ export default {
         // 接收子组件传来的叫trademark的数据
         trademarkInfo(trademark) {
             // 迎合人规定的trademark数据的格式： ID:NAME
-            this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+            this.searchParams.trademark = `${trademark.id}:${trademark.tmName}`;
             // 弄完后重新请求数据
             this.getData();
         },
@@ -286,14 +286,9 @@ export default {
             /* 这儿不同于上面的trademarkInfo中的trademark，因为trademark是个字符串，赋值的话直接等号就行了，而这儿的
             props是个数组，数组中可能不止一个元素，所以不能用等号。向数组中添加元素的话，要用push方法 */
             // 且这里要加一个数组去重的if，否则你同时点一个的话，面包屑该有重复了
-            if (
-                this.searchParams.props.indexOf(
-                    `${attr.attrId}:${attrValue}:${attr.attrName}`
-                )
-            ) {
-                this.searchParams.props.push(
-                    `${attr.attrId}:${attrValue}:${attr.attrName}`
-                );
+            let props = `${attr.id}:${attrValue.id}:${attrValue.valueName}`;
+            if (this.searchParams.props.indexOf(props) == -1) {
+                this.searchParams.props.push(props);
             }
             // 弄完后重新请求数据
             this.getData();

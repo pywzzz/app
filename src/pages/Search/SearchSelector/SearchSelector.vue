@@ -6,41 +6,24 @@
                 <ul class="logo-list">
                     <li
                         v-for="trademark in trademarkList"
-                        :key="trademark.tmId"
+                        :key="trademark.id"
                         @click="trademarkHandler(trademark)"
                     >
-                        {{ trademark.tmName }}
+                        <img :src="trademark.logoUrl" />
                     </li>
-                    <li><img src="./images/phone06.png" /></li>
-                    <li><img src="./images/phone07.png" /></li>
-                    <li><img src="./images/phone08.png" /></li>
-                    <li><img src="./images/phone09.png" /></li>
-                    <li><img src="./images/phone10.png" /></li>
-                    <li><img src="./images/phone11.png" /></li>
-                    <li><img src="./images/phone12.png" /></li>
-                    <li><img src="./images/phone12.png" /></li>
-                    <li><img src="./images/phone14.png" /></li>
-                    <li><img src="./images/phone01.png" /></li>
-                    <li><img src="./images/phone06.png" /></li>
-                    <li><img src="./images/phone07.png" /></li>
-                    <li><img src="./images/phone02.png" /></li>
                 </ul>
             </div>
-            <div class="ext">
-                <a href="javascript:void(0);" class="sui-btn">多选</a>
-                <a href="javascript:void(0);">更多</a>
-            </div>
         </div>
-        <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
+        <div class="type-wrap" v-for="attr in attrsList" :key="attr.id">
             <div class="fl key">{{ attr.attrName }}</div>
             <div class="fl value">
                 <ul class="type-list">
                     <li
-                        v-for="(attrValue, index) in attr.attrValueList"
-                        :key="index"
+                        v-for="attrValue in attr.attrValueList"
+                        :key="attrValue.id"
                         @click="attrHandler(attr, attrValue)"
                     >
-                        <a>{{ attrValue }}</a>
+                        <a>{{ attrValue.valueName }}</a>
                     </li>
                 </ul>
             </div>
