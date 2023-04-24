@@ -20,7 +20,7 @@ export const reqGetSearchInfo = (params) =>
 // 获取Detail组件的相关数据
 // 获取的形参skuId是params参数，接收后向相应的url请求数据
 export const reqGoodsInfo = (skuId) =>
-    requests({ url: `/item/${skuId}`, method: "get" });
+    requests({ url: `/admin/product/getSkuById/${skuId}`, method: "get" });
 
 // 将产品添加到购物车期间所需要的数据
 export const reqAddOrUpdateShopCart = (skuId, skuNum) =>

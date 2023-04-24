@@ -40,15 +40,15 @@ const actions = {
 // 功能类似计算属性，用于少些写东西
 const getters = {
     // getters中函数的state就是本仓库的state
-    categoryView(state) {
-        // 这儿加个 || {} 的原因类比search仓库那儿的(不同之处就是search那儿的是数组，所以 || [] )undefined什么的
-        return state.goodsInfo.categoryView || {};
-    },
     skuInfo(state) {
-        return state.goodsInfo.skuInfo || {};
+        // 这儿加个 || {} 的原因类比search仓库那儿的(不同之处就是search那儿的是数组，所以 || [] )undefined什么的
+        return state.goodsInfo || {};
     },
     spuSaleAttrList(state) {
         return state.goodsInfo.spuSaleAttrList || [];
+    },
+    skuImageList(state) {
+        return state.goodsInfo.skuImageList || [];
     },
 };
 

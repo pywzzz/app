@@ -5,21 +5,6 @@
 
         <!-- 主要内容区域 -->
         <section class="con">
-            <!-- 导航路径区域 -->
-            <div class="conPoin">
-                <!-- 动态展示一级分类的名字 -->
-                <span v-show="categoryView.category1Name">{{
-                    categoryView.category1Name
-                }}</span>
-                <!-- 动态展示二级分类的名字 -->
-                <span v-show="categoryView.category2Name">{{
-                    categoryView.category2Name
-                }}</span>
-                <!-- 动态展示三级分类的名字 -->
-                <span v-show="categoryView.category3Name">{{
-                    categoryView.category3Name
-                }}</span>
-            </div>
             <!-- 主要内容区域 -->
             <div class="mainCon">
                 <!-- 左侧放大镜区域 -->
@@ -89,7 +74,7 @@
                         <div class="chooseArea">
                             <div class="choosed"></div>
                             <dl
-                                v-for="spuSaleAttr in spuSaleAttrList"
+                                v-for="spuSaleAttr in updatedSpuSaleAttrList"
                                 :key="spuSaleAttr.id"
                             >
                                 <dt class="title">
@@ -405,6 +390,7 @@ export default {
         return {
             // 用户在商品详情界面购买商品的数量
             skuNum: 1,
+            updatedSpuSaleAttrList: [],
         };
     },
     components: {
@@ -416,13 +402,38 @@ export default {
     },
     // 获取仓库中的数据
     computed: {
-        ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
-        skuImageList() {
-            // 这儿也是类比search仓库之解决因为undefined导致的报红
-            return this.skuInfo.skuImageList || [];
+        ...mapGetters(["skuInfo", "spuSaleAttrList", "skuImageList"]),
+    },
+    watch: {
+        // 从仓库中获取spuSaleAttrList后就调用updateSpuSaleAttrList()方法
+        spuSaleAttrList: {
+            deep: true,
+            immediate: true,
+            handler() {
+                this.updateSpuSaleAttrList();
+            },
         },
     },
     methods: {
+        // 为从仓库中获取的spuSaleAttrList中的东西加一个isChecked属性
+        updateSpuSaleAttrList() {
+            this.updatedSpuSaleAttrList = this.spuSaleAttrList.map(
+                (spuSaleAttr) => {
+                    return {
+                        ...spuSaleAttr,
+                        spuSaleAttrValueList:
+                            spuSaleAttr.spuSaleAttrValueList.map(
+                                (spuSaleAttrValue) => {
+                                    return {
+                                        ...spuSaleAttrValue,
+                                        isChecked: 0,
+                                    };
+                                }
+                            ),
+                    };
+                }
+            );
+        },
         // saleAttrValue是在saleAttrValueList下的一个个数据
         // isChecked属性在saleAttrValue中
         changeActive(saleAttrValue, spuSaleAttrValueList) {
