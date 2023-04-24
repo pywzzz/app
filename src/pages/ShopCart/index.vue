@@ -25,7 +25,7 @@
                         />
                     </li>
                     <li class="cart-list-con2">
-                        <img :src="cart.imgUrl" />
+                        <img :src="cart.skuDefaultImg" />
                         <div class="item-msg">
                             {{ cart.skuName }}
                         </div>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import throttle from "lodash/throttle";
 export default {
     name: "ShopCart",
@@ -111,11 +111,9 @@ export default {
         this.getData();
     },
     computed: {
-        ...mapGetters(["cartList"]),
-        // 再弄个这主要是因为cartList并不你是想要的购物车数据罢
-        cartInfoList() {
-            return this.cartList.cartInfoList || [];
-        },
+        ...mapState({
+            cartInfoList: (state) => state.shopcart.cartList || [],
+        }),
         // 计算产品总价
         totalPrice() {
             let sum = 0;

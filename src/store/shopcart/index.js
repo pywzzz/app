@@ -39,9 +39,9 @@ const actions = {
     },
     // 这儿的“删除选中的商品”是借助上面的deleteCartListBySkuId弄的
     // 先把context中的dispatch和getters解构出来
-    deleteAllCheckedCart({ dispatch, getters }) {
+    deleteAllCheckedCart({ dispatch, state }) {
         let PromiseAll = [];
-        getters.cartList.cartInfoList.forEach((item) => {
+        state.cartList.forEach((item) => {
             // 下面的这个 "" 表示什么都不做
             let promise =
                 item.isChecked == 1
@@ -58,7 +58,7 @@ const actions = {
     updateAllCartIsChecked({ dispatch, state }, isChecked) {
         let PromiseAll = [];
         // 这儿的cartList[0]是因为人数据库设计的是cartList是个数组，然后信息都在第0个元素中
-        state.cartList[0].cartInfoList.forEach((item) => {
+        state.cartList.forEach((item) => {
             let promise = dispatch("updateCheckedBySkuId", {
                 skuId: item.skuId,
                 isChecked,
@@ -69,12 +69,7 @@ const actions = {
     },
 };
 // 功能类似计算属性，用于少些写东西
-const getters = {
-    cartList(state) {
-        // 这儿 || 的是个 {} 是因为，算了你自己看人返回的数据格式就知道了
-        return state.cartList[0] || {};
-    },
-};
+const getters = {};
 
 // 对外暴露Store类的一个实例对象
 export default {
