@@ -38,7 +38,7 @@ const actions = {
         }
     },
     // 这儿的“删除选中的商品”是借助上面的deleteCartListBySkuId弄的
-    // 先把context中的dispatch和getters解构出来
+    // 先把context中的dispatch和state解构出来
     deleteAllCheckedCart({ dispatch, state }) {
         let PromiseAll = [];
         state.cartList.forEach((item) => {
@@ -57,7 +57,6 @@ const actions = {
     },
     updateAllCartIsChecked({ dispatch, state }, isChecked) {
         let PromiseAll = [];
-        // 这儿的cartList[0]是因为人数据库设计的是cartList是个数组，然后信息都在第0个元素中
         state.cartList.forEach((item) => {
             let promise = dispatch("updateCheckedBySkuId", {
                 skuId: item.skuId,

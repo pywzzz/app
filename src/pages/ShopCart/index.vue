@@ -133,9 +133,7 @@ export default {
             // 派发actions以得到购物车shopcart的相关数据
             this.$store.dispatch("getCartList");
         },
-        /* 接口reqAddOrUpdateShopCart收到的${skuId}/${skuNum}这两个参数中，skuId指明
-        产品id，skuNum表示商品数量的变化值，正数代表加多少，负数代表减多少 */
-        // 这儿的num即skuNum，cart用于获取产品id
+        // 这儿的num即skuNum，cart用于获取产品id和原本的skuNum
         // 这里弄个节流，要不点太快的话，数量可能会被点到0或负数
         handler: throttle(async function (type, num, cart) {
             switch (type) {
