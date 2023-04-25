@@ -22,10 +22,6 @@ const requests = axios.create({
 requests.interceptors.request.use((config) => {
     // 进度条开始
     nprogress.start();
-    if (store.state.detail.uuid_token) {
-        // 在请求头中，加个叫userTempId（这个字段名应和后台相呼应）的字段，用来传uuid_token这个数据
-        config.headers.userTempId = store.state.detail.uuid_token;
-    }
     if (store.state.user.token) {
         /* 因为人api中不收token这参数，所以得借助请求头来传token这参，所以在请求头中，加个
         叫token的字段，供登录后拿着token获取用户信息用 */

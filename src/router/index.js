@@ -19,7 +19,7 @@ let router = new VueRouter({
 
 router.beforeEach(async (to, from, next) => {
     let token = store.state.user.token;
-    let name = store.state.user.userInfo.name;
+    let name = store.state.user.userInfo.username;
     // 如果有token，即已登录
     if (token) {
         // 此时访 /login 或 /register 的话
@@ -58,6 +58,7 @@ router.beforeEach(async (to, from, next) => {
         // trade、center、pay、paysuccess这四个地方不登录的话是不能去的
         // 这儿的 indexOf("/pay") 包括了pay和paysuccess这两种情况
         if (
+            toPath.indexOf("/addcartsuccess") != -1 ||
             toPath.indexOf("/trade") != -1 ||
             toPath.indexOf("/pay") != -1 ||
             toPath.indexOf("/center") != -1

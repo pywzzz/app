@@ -78,7 +78,7 @@ export const reqUserRegister = (data) =>
 
 // 用户登录
 export const reqUserLogin = (data) =>
-    requests({ url: "/user/passport/login", data, method: "post" });
+    requests({ url: "/admin/acl/index/login", data, method: "post" });
 
 // 带着登录时得到的token获取用户信息
 // token这个参数通过请求头传入，而不是在这儿传入
@@ -87,7 +87,7 @@ export const reqUserInfo = () =>
 
 // 退出登录
 export const reqLogout = () =>
-    requests({ url: "/user/passport/logout", method: "get" });
+    requests({ url: "/admin/acl/index/logout", method: "post" });
 
 // 获取个人中心那儿的“我的订单”那儿的数据
 export const reqMyOrderList = (page, limit) =>

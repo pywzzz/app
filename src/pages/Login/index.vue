@@ -20,7 +20,7 @@
                                 <input
                                     type="text"
                                     placeholder="邮箱/用户名/手机号"
-                                    v-model="phone"
+                                    v-model="username"
                                 />
                             </div>
                             <div class="input-text clearFix">
@@ -89,18 +89,18 @@ export default {
     name: "Login",
     data() {
         return {
-            phone: "",
+            username: "",
             password: "",
         };
     },
     methods: {
         async userLogin() {
             try {
-                const { phone, password } = this;
-                phone &&
+                const { username, password } = this;
+                username &&
                     password &&
                     (await this.$store.dispatch("userLogin", {
-                        phone,
+                        username,
                         password,
                     }));
                 // redirect这个query参数的值是用户原本想去的地方（trade、center、pay、paysuccess中的某一个）的路径

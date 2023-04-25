@@ -121,7 +121,6 @@ export default {
                 const { phone } = this;
                 // 如果有phone的话再去请求数据，去要验证码
                 phone && (await this.$store.dispatch("getCode", phone));
-                this.code = this.$store.state.user.code;
             } catch (error) {}
         },
         async userRegister() {

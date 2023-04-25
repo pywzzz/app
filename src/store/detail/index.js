@@ -1,12 +1,8 @@
 import { reqGoodsInfo, reqGetBannerList, reqAddOrUpdateShopCart } from "@/api";
-import { getUUID } from "@/utils/uuid_token";
 // 仓库存数据的地方
 const state = {
     // 人的设计的数据的格式是个对象，所以这儿初始值应是个对象
     goodsInfo: {},
-    /* 用uuid_token这东西来标识actions的addOrUpdateShopCart中传的skuId和skuNum属于
-    哪个用户，从而在后来用户从数据库中可以取到自己的那个skuId和skuNum */
-    uuid_token: getUUID(),
 };
 // 修改state的唯一地方
 const mutations = {

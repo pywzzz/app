@@ -8,7 +8,6 @@ import {
 import { getToken, removeToken, setToken } from "@/utils/token";
 // 仓库存数据的地方
 const state = {
-    code: "",
     // vuex的数据不是持久化存储
     /* 一开始本地没有token，所以这儿getToken没用，token还是null，但是你登录后，在userLogin中
     的setToken就可以将其存到本地，这时候getToken就能拿到token了。这时你再刷新页面的话，也是
@@ -18,9 +17,6 @@ const state = {
 };
 // 修改state的唯一地方
 const mutations = {
-    GETCODE(state, code) {
-        state.code = code;
-    },
     USERLOGIN(state, token) {
         state.token = token;
     },
@@ -41,7 +37,6 @@ const actions = {
     async getCode({ commit }, phone) {
         let result = await reqGetCode(phone);
         if (result.code == 200) {
-            commit("GETCODE", result.data);
             return "ok";
         } else {
             return Promise.reject(new Error("fail"));
