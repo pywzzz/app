@@ -32,11 +32,11 @@ export const reqCartList = () =>
 
 //用于删除购物车中产品的接口
 export const reqDeleteCartById = (skuId) =>
-    requests({ url: `/cart/deleteCart/${skuId}`, method: "delete" });
+    requests({ url: `/cart/deleteCart/${skuId}`, method: "put" });
 
 // 用于修改购物车中产品的那个“选中”按钮勾还是不勾的接口
 export const reqUpdateCheckedById = (skuId, isChecked) =>
-    requests({ url: `/cart/checkCart/${skuId}/${isChecked}`, method: "get" });
+    requests({ url: `/cart/checkCart/${skuId}/${isChecked}`, method: "put" });
 
 // 用于获取在结算界面用到的用户地址信息
 export const reqAddressInfo = () =>

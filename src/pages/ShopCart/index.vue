@@ -140,14 +140,13 @@ export default {
         handler: throttle(async function (type, num, cart) {
             switch (type) {
                 case "add":
-                    num = 1;
+                    num = cart.skuNum + 1;
                     break;
                 case "reduce":
-                    num = cart.skuNum > 1 ? -1 : 0;
+                    num = cart.skuNum > 1 ? cart.skuNum - 1 : 0;
                     break;
                 case "change":
-                    num =
-                        isNaN(num) || num < 1 ? 0 : parseInt(num) - cart.skuNum;
+                    num = isNaN(num) || num < 1 ? 0 : parseInt(num);
                     break;
             }
             try {
