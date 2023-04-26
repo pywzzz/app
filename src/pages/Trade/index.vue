@@ -45,7 +45,7 @@
                 >
                     <li>
                         <img
-                            :src="order.imgUrl"
+                            :src="order.skuDefaultImg"
                             alt=""
                             style="width: 100px; height: 100px"
                         />
@@ -57,7 +57,7 @@
                         <h4>7天无理由退货</h4>
                     </li>
                     <li>
-                        <h3>￥{{ order.orderPrice }}.00</h3>
+                        <h3>￥{{ order.skuPrice * order.skuNum }}.00</h3>
                     </li>
                     <li>X{{ order.skuNum }}</li>
                     <li>有货</li>
@@ -82,10 +82,10 @@
             <ul>
                 <li>
                     <b
-                        ><i>{{ orderInfo.totalNum }}</i
+                        ><i>{{ totalAmount }}</i
                         >件商品，总商品金额</b
                     >
-                    <span>¥{{ orderInfo.totalAmount }}.00</span>
+                    <span>¥{{ totalNum }}.00</span>
                 </li>
                 <li>
                     <b>返现：</b>
@@ -98,7 +98,9 @@
             </ul>
         </div>
         <div class="trade">
-            <div class="price">应付金额：<span>¥5399.00</span></div>
+            <div class="price">
+                应付金额：<span>¥{{ totalNum }}.00</span>
+            </div>
             <div class="receiveInfo">
                 寄送至:
                 <span>{{ userDefaulAddress.fullAddress }}</span>
@@ -133,6 +135,24 @@ export default {
             // 数组的find方法会返回满足条件的数组
             return this.addressInfo.find((item) => item.isDefault == 1) || {};
         },
+        totalAmount() {
+            return this.orderInfo.detailArrayList.reduce(
+                (accumulator, currentItem) => {
+                    return accumulator + currentItem.skuNum;
+                },
+                0
+            );
+        },
+        totalNum() {
+            return this.orderInfo.detailArrayList.reduce(
+                (accumulator, currentItem) => {
+                    return (
+                        accumulator + currentItem.skuPrice * currentItem.skuNum
+                    );
+                },
+                0
+            );
+        },
     },
     methods: {
         changeDefault(address, addressInfo) {
@@ -142,7 +162,6 @@ export default {
             });
         },
         async submitOrder() {
-            let { tradeNo } = this.orderInfo;
             let data = {
                 // 付款人的名字
                 consignee: this.userDefaulAddress.consignee,
@@ -157,7 +176,7 @@ export default {
                 // 购物车商品信息
                 orderDetailList: this.orderInfo.detailArrayList,
             };
-            let result = await this.$API.reqSubmitOrder(tradeNo, data);
+            let result = await this.$API.reqSubmitOrder(data);
             if (result.code == 200) {
                 // 成功的话接口会返回一个叫data的订单号
                 this.orderId = result.data;

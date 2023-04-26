@@ -50,9 +50,9 @@ export const reqOrderInfo = () =>
     requests({ url: "/order/auth/trade", method: "get" });
 
 // 用于结算界面提交订单后给服务器传相关数据
-export const reqSubmitOrder = (tradeNo, data) =>
+export const reqSubmitOrder = (data) =>
     requests({
-        url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+        url: "/order/auth/submitOrder",
         data,
         method: "post",
     });
