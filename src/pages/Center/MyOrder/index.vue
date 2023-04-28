@@ -29,7 +29,7 @@
                             <th colspan="5">
                                 <span class="ordertitle"
                                     >{{ order.createTime }} 订单编号：{{
-                                        order.outTradeNo
+                                        order.orderId
                                     }}
                                     <span class="pull-right delete"
                                         ><img
@@ -42,13 +42,13 @@
                         <!-- tr中有5个td，分别表示商品信息、收货人、金额、状态、操作 -->
                         <tr
                             v-for="(cart, index) in order.orderDetailList"
-                            :key="cart.id"
+                            :key="cart.skuId"
                         >
                             <!-- 这个td中放的是商品信息 -->
                             <td width="60%">
                                 <div class="typographic">
                                     <img
-                                        :src="cart.imgUrl"
+                                        :src="cart.skuDefaultImg"
                                         style="width: 100px; height: 100px"
                                     />
                                     <a href="#" class="block-text">{{
@@ -77,8 +77,11 @@
                                 class="center"
                             >
                                 <ul class="unstyled">
-                                    <li>总金额¥{{ order.totalAmount }}.00</li>
-                                    <li>在线支付</li>
+                                    <li>
+                                        总金额¥{{
+                                            totalPrice(order.orderDetailList)
+                                        }}.00
+                                    </li>
                                 </ul>
                             </td>
                             <td
@@ -87,9 +90,11 @@
                                 width="8%"
                                 class="center"
                             >
-                                <a href="#" class="btn">{{
-                                    order.orderStatusName
-                                }}</a>
+                                <a href="#" class="btn"
+                                    >{{
+                                        order.status === 0 ? "未支付" : "已支付"
+                                    }}
+                                </a>
                             </td>
                             <td
                                 :rowspan="order.orderDetailList.length"
@@ -213,6 +218,11 @@ export default {
         handleSizeChange(limit) {
             this.limit = limit;
             this.getData();
+        },
+        totalPrice(orderDetailList) {
+            return orderDetailList.reduce((total, item) => {
+                return total + item.skuPrice;
+            }, 0);
         },
     },
     mounted() {
