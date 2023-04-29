@@ -23,29 +23,6 @@
                     >
                 </div>
             </div>
-            <div class="checkout-info">
-                <h4>重要说明：</h4>
-                <ol>
-                    <li>
-                        尚品汇商城支付平台目前支持<span class="zfb">支付宝</span
-                        >支付方式。
-                    </li>
-                    <li>其它支付渠道正在调试中，敬请期待。</li>
-                    <li>
-                        为了保证您的购物支付流程顺利完成，请保存以下支付宝信息。
-                    </li>
-                </ol>
-                <h4>
-                    支付宝账户信息：（很重要，<span class="save"
-                        >请保存！！！</span
-                    >）
-                </h4>
-                <ul>
-                    <li>支付帐号：11111111</li>
-                    <li>密码：111111</li>
-                    <li>支付密码：111111</li>
-                </ul>
-            </div>
             <div class="checkout-steps">
                 <div class="step-tit">
                     <h5>支付平台</h5>
@@ -84,19 +61,6 @@
 
                 <div class="submit">
                     <a class="btn" @click="open">立即支付</a>
-                </div>
-                <div class="otherpay">
-                    <div class="step-tit">
-                        <h5>其他支付方式</h5>
-                    </div>
-                    <div class="step-cont">
-                        <span
-                            ><a href="weixinpay.html" target="_blank"
-                                >微信支付</a
-                            ></span
-                        >
-                        <span>中国银联</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -139,19 +103,19 @@ export default {
                     if (type == "cancel") {
                         alert("请联系管理员");
                         // 清除定时器
-                        clearInterval(instance.timer);
-                        instance.timer = null;
+                        clearInterval(this.timer);
+                        this.timer = null;
                         // 关闭弹窗
                         done();
-                    } else {
-                        if (instance.code == 200) {
+                    } else if (type == "confirm") {
+                        if (this.code == 200) {
                             // 清除定时器
-                            clearInterval(instance.timer);
-                            instance.timer = null;
+                            clearInterval(this.timer);
+                            this.timer = null;
                             // 关闭弹窗
                             done();
                             // 路由跳转
-                            instance.$router.push("/paysuccess");
+                            this.$router.push("/paysuccess");
                         }
                     }
                 },
@@ -171,10 +135,6 @@ export default {
                         /* 这一行表示在this中新声明一个叫code的变量，值为result.code，就，code不是
                         原本就有的，是你自己声明的罢 */
                         this.code = result.code;
-                        // 关闭element-ui的这个弹出框
-                        this.$msgbox.close();
-                        // 路由跳转
-                        this.$router.push("/paysuccess");
                     }
                 }, 1000);
             }
@@ -251,34 +211,6 @@ export default {
                         line-height: 22.5px;
                     }
                 }
-            }
-        }
-
-        .checkout-info {
-            padding-left: 25px;
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-            border: 2px solid #e1251b;
-
-            h4 {
-                margin: 9px 0;
-                font-size: 14px;
-                line-height: 21px;
-                color: #e1251b;
-            }
-
-            ol {
-                padding-left: 25px;
-                list-style-type: decimal;
-                line-height: 24px;
-                font-size: 14px;
-            }
-
-            ul {
-                padding-left: 25px;
-                list-style-type: disc;
-                line-height: 24px;
-                font-size: 14px;
             }
         }
 
