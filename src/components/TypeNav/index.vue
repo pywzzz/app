@@ -11,7 +11,7 @@
                     <!-- 但编程式导航的思路是没错的，只不过这玩意儿不应该写在每级列表各自的div中，而是应写在列表们的那个大亲爹div去统一去
                     弄。期间需要通过vue自定义属性这东西来区分出a标签从而保证只有a标签具有跳转的功能，并且通过自定义属性来区分列表是几
                     级分类 -->
-                    <div class="all-sort-list2" @click="toSearch">
+                    <div class="all-sort-list2">
                         <!-- 遍历生成一级列表 -->
                         <!-- 其中的 :class="{ cur: currentIndex == index } 可以理解为，{}中是个kv键值对
                     且这儿的v是一个逻辑表达式，返回值为ture或false。从而控制cur这个样式是否生效 -->
@@ -65,12 +65,14 @@
                                                 :key="c3.categoryId"
                                             >
                                                 <a
+                                                    style="cursor: pointer"
                                                     :data-categoryName="
                                                         c3.categoryName
                                                     "
                                                     :data-category3Id="
                                                         c3.categoryId
                                                     "
+                                                    @click="toSearch"
                                                     >{{ c3.categoryName }}</a
                                                 >
                                             </em>

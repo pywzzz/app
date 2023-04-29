@@ -63,7 +63,10 @@
                         }}</span>
                     </li>
                     <li class="cart-list-con7">
-                        <a class="sindelet" @click="deleteCartById(cart)"
+                        <a
+                            class="sindelet"
+                            style="cursor: pointer"
+                            @click="deleteCartById(cart)"
                             >删除</a
                         >
                         <br />
@@ -84,7 +87,9 @@
                 <span>全选</span>
             </div>
             <div class="option">
-                <a @click="deleteAllCheckedCart">删除选中的商品</a>
+                <a style="cursor: pointer" @click="deleteAllCheckedCart"
+                    >删除选中的商品</a
+                >
                 <a href="#none">移到我的关注</a>
                 <a href="#none">清除下柜商品</a>
             </div>

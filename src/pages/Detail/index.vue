@@ -33,11 +33,10 @@
                                 <div class="price">
                                     <i>¥</i>
                                     <em>{{ skuInfo.price }}</em>
-                                    <span>降价通知</span>
                                 </div>
                                 <div class="remark">
-                                    <i>累计评价</i>
-                                    <em>65545</em>
+                                    <i>累计评价：</i>
+                                    <em>65545条</em>
                                 </div>
                             </div>
                             <div class="priceArea2">
@@ -82,6 +81,7 @@
                                 </dt>
                                 <!-- changeActive用于将点击的商品属性高亮 -->
                                 <dd
+                                    style="cursor: pointer"
                                     changepirce="0"
                                     :class="{
                                         active: spuSaleAttrValue.isChecked == 1,
@@ -126,7 +126,9 @@
                             </div>
                             <div class="add">
                                 <!-- 路由跳转时还要利用addShopCart把相应的跳转过程中要用到的参数传一下 -->
-                                <a @click="addShopCart">加入购物车</a>
+                                <a style="cursor: pointer" @click="addShopCart"
+                                    >加入购物车</a
+                                >
                             </div>
                         </div>
                     </div>

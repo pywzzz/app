@@ -83,7 +83,7 @@
                 <li>
                     <b
                         ><i>{{ totalAmount }}</i
-                        >件商品，总商品金额</b
+                        >件商品，总商品金额：</b
                     >
                     <span>¥{{ totalNum }}.00</span>
                 </li>
@@ -102,14 +102,17 @@
                 应付金额：<span>¥{{ totalNum }}.00</span>
             </div>
             <div class="receiveInfo">
-                寄送至:
-                <span>{{ userDefaulAddress.fullAddress }}</span>
+                寄送至：
+                <span>{{ userDefaulAddress.fullAddress }}</span
+                ><br />
                 收货人：<span>{{ userDefaulAddress.consignee }}</span>
                 <span>{{ userDefaulAddress.phoneNum }}</span>
             </div>
         </div>
         <div class="sub clearFix">
-            <a class="subBtn" @click="submitOrder">提交订单</a>
+            <a class="subBtn" style="cursor: pointer" @click="submitOrder"
+                >提交订单</a
+            >
         </div>
     </div>
 </template>

@@ -108,16 +108,15 @@
                                     </div>
                                     <div class="price">
                                         <strong>
-                                            <em>¥</em>
+                                            <em>¥ </em>
                                             <i>{{ good.price }}</i>
                                         </strong>
                                     </div>
                                     <div class="attr">
-                                        <a
-                                            target="_blank"
-                                            href="item.html"
+                                        <router-link
+                                            :to="`/detail/${good.id}`"
                                             :title="good.title"
-                                            >{{ good.title }}</a
+                                            >{{ good.title }}</router-link
                                         >
                                     </div>
                                     <div class="commit">
