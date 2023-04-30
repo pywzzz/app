@@ -28,9 +28,10 @@
                         <tr>
                             <th colspan="5">
                                 <span class="ordertitle"
-                                    >{{ order.createTime }} 订单编号：{{
-                                        order.orderId
-                                    }}
+                                    >{{
+                                        order.createTime
+                                    }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    订单编号：{{ order.orderId }}
                                     <span class="pull-right delete"
                                         ><img
                                             src="../images/delete.png" /></span
