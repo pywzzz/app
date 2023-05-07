@@ -136,7 +136,7 @@ export default {
                     });
                     this.$router.push("/login");
                 } catch (error) {
-                    alert(error.message);
+                    alert("此手机号已被注册，请使用其他手机号进行注册！");
                 }
             }
         },
