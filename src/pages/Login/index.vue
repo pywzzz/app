@@ -107,7 +107,7 @@ export default {
                 // 登录后跳转到用户最开始想去的地方，而不是生硬地跳转到 /home
                 this.$router.push(toPath);
             } catch (error) {
-                alert(error.message);
+                alert("账号或者密码有误，请重新输入！");
             }
         },
     },

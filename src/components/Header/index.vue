@@ -16,7 +16,12 @@
                     </p>
                     <p v-else>
                         <a>{{ userName }}</a
-                        ><a class="register" @click="logout">退出登录</a>
+                        ><a
+                            class="register"
+                            @click="logout"
+                            style="cursor: pointer"
+                            >退出登录</a
+                        >
                     </p>
                 </div>
                 <div class="typeList">
