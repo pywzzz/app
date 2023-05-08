@@ -48,7 +48,7 @@ const actions = {
         if (result.code == 200) {
             return "ok";
         } else {
-            return Promise.reject(new Error("fail"));
+            return Promise.reject(result);
         }
     },
     // 拿着token去获取用户信息

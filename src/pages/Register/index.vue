@@ -136,7 +136,13 @@ export default {
                     });
                     this.$router.push("/login");
                 } catch (error) {
-                    alert("此手机号已被注册，请使用其他手机号进行注册！");
+                    if (error.data == "User already exists") {
+                        alert("此手机号已被注册，请使用其他手机号进行注册！");
+                    } else {
+                        alert(
+                            "验证码输入有误或已过期，请重新输入或获取验证码！"
+                        );
+                    }
                 }
             }
         },
