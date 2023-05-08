@@ -99,3 +99,7 @@ export const reqGetBannerList = () =>
 
 // 获取floor数据
 export const reqFloorList = () => requests({ url: "/floor", method: "get" });
+
+// 验证token是否有效
+export const reqValidateToken = () =>
+    requests({ url: "/user/validateToken", method: "get" });

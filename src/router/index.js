@@ -4,6 +4,8 @@ import VueRouter from "vue-router";
 import routes from "./routes";
 // 引入store仓库
 import store from "@/store";
+import { isTokenExpired } from "@/utils/token";
+import { Message } from "element-ui";
 // 使用插件
 Vue.use(VueRouter);
 // 配置路由
@@ -22,33 +24,41 @@ router.beforeEach(async (to, from, next) => {
     let name = store.state.user.userInfo.username;
     // 如果有token，即已登录
     if (token) {
-        // 此时访 /login 或 /register 的话
-        if (to.path == "/login" || to.path == "/register") {
-            // 会跳转至 /home
-            next("/home");
-            // 如果访问其他地方
+        // 判断token是否过期
+        if (await isTokenExpired(token)) {
+            // token过期，提示用户重新登录并重定向到登录页面
+            await store.dispatch("userLogout");
+            next("/login");
+            Message.warning("登录已过期，请重新登录！");
         } else {
-            /* 这儿不一定非要用name，用userInfo里的nickName、loginName云都行，这儿
-            就是为了解决87~88那儿ps的2中所述的问题 */
-            /* 这里不用直接用userInfo而是用里面的些子数据是因为userInfo是个对象，对象
-            无论空不空都是true，那儿这儿就没法if了 */
-            // 如果有name，代表有userInfo了
-            if (name) {
-                // 直接放行
-                next();
-                // 如果没有name，代表没有获取到userInfo
+            // 此时访 /login 或 /register 的话
+            if (to.path == "/login" || to.path == "/register") {
+                // 会跳转至 /home
+                next("/home");
+                // 如果访问其他地方
             } else {
-                try {
-                    // 则去派发下actions来获取userInfo
-                    await store.dispatch("getUserInfo");
-                    // 然后放行
+                /* 这儿不一定非要用name，用userInfo里的nickName、loginName云都行，这儿
+            就是为了解决87~88那儿ps的2中所述的问题 */
+                /* 这里不用直接用userInfo而是用里面的些子数据是因为userInfo是个对象，对象
+            无论空不空都是true，那儿这儿就没法if了 */
+                // 如果有name，代表有userInfo了
+                if (name) {
+                    // 直接放行
                     next();
-                    // 只有token失效，try中的dispatch才会不成功，这时才会走catch
-                } catch (error) {
-                    // 这时直接用退出登录的actions即userLogout去把失效的token、userInfo啥的清掉
-                    await store.dispatch("userLogout");
-                    // 再放行到登录页面，供用户去登录
-                    next("/login");
+                    // 如果没有name，代表没有获取到userInfo
+                } else {
+                    try {
+                        // 则去派发下actions来获取userInfo
+                        await store.dispatch("getUserInfo");
+                        // 然后放行
+                        next();
+                        // 只有token失效，try中的dispatch才会不成功，这时才会走catch
+                    } catch (error) {
+                        // 这时直接用退出登录的actions即userLogout去把失效的token、userInfo啥的清掉
+                        await store.dispatch("userLogout");
+                        // 再放行到登录页面，供用户去登录
+                        next("/login");
+                    }
                 }
             }
         }
