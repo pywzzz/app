@@ -8,6 +8,17 @@
                     >我有账号，去 <a href="login.html" target="_blank">登陆</a>
                 </span>
             </h3>
+
+            <div class="content">
+                <label>昵称:</label>
+                <input
+                    type="text"
+                    placeholder="请输入你的昵称"
+                    v-model="nickname"
+                    name="nickname"
+                />
+            </div>
+
             <div class="content">
                 <label>手机号:</label>
                 <input
@@ -55,7 +66,6 @@
                 <input
                     type="password"
                     placeholder="请输入确认密码"
-                    v-model="rePassword"
                     name="rePassword"
                     v-validate="{
                         required: true,
@@ -92,11 +102,9 @@
                 <li>联系客服</li>
                 <li>商家入驻</li>
                 <li>营销中心</li>
-                <li>手机尚品汇</li>
                 <li>销售联盟</li>
-                <li>尚品汇社区</li>
             </ul>
-            <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
+            <div class="address">地址：河南省焦作市河南理工大学</div>
             <div class="beian">京ICP备19006430号</div>
         </div>
     </div>
@@ -107,11 +115,11 @@ export default {
     name: "Register",
     data() {
         return {
+            nickname: "",
             phone: "",
             // 验证码
             code: "",
             password: "",
-            rePassword: "",
             agree: true,
         };
     },
@@ -128,8 +136,9 @@ export default {
             if (await this.$validator.validateAll()) {
                 // 注册
                 try {
-                    const { phone, code, password, rePassword } = this;
+                    const { nickname, phone, code, password } = this;
                     await this.$store.dispatch("userRegister", {
+                        nickname,
                         phone,
                         code,
                         password,

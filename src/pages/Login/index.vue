@@ -6,7 +6,7 @@
                 <div class="loginform">
                     <ul class="tab clearFix">
                         <li>
-                            <a href="##" style="border-right: 0">扫描登录</a>
+                            <a href="##" style="border-right: 0">扫码登录</a>
                         </li>
                         <li>
                             <a href="##" class="current">账户登录</a>
@@ -19,7 +19,7 @@
                                 <span></span>
                                 <input
                                     type="text"
-                                    placeholder="邮箱/用户名/手机号"
+                                    placeholder="请输入手机号"
                                     v-model="username"
                                 />
                             </div>
@@ -74,11 +74,9 @@
                 <li>联系客服</li>
                 <li>商家入驻</li>
                 <li>营销中心</li>
-                <li>手机尚品汇</li>
                 <li>销售联盟</li>
-                <li>尚品汇社区</li>
             </ul>
-            <div class="address">地址：北京市昌平区宏福科技园综合楼6层</div>
+            <div class="address">地址：河南省焦作市河南理工大学</div>
             <div class="beian">京ICP备19006430号</div>
         </div>
     </div>
