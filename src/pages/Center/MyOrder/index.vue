@@ -209,7 +209,35 @@ export default {
             const { page, limit } = this;
             let result = await this.$API.reqMyOrderList(page, limit);
             if (result.code == 200) {
-                this.myOrder = result.data;
+                // 原始数据
+                const originalData = result.data;
+
+                // 用于存储转换后的数据
+                let transformedData = {
+                    total: originalData.total,
+                    records: [],
+                };
+
+                // 创建一个映射，以订单ID作为键，订单对象作为值
+                let orderMap = {};
+
+                // 遍历原始数据的记录
+                for (let record of originalData.records) {
+                    // 如果订单ID已经存在于映射中，则添加订单详情到该订单的orderDetailList中
+                    if (record.orderId in orderMap) {
+                        orderMap[record.orderId].orderDetailList.push(
+                            ...record.orderDetailList
+                        );
+                    }
+                    // 否则，将此记录添加到映射和转换后的数据中
+                    else {
+                        orderMap[record.orderId] = record;
+                        transformedData.records.push(record);
+                    }
+                }
+
+                // 将转换后的数据赋值给 this.myOrder
+                this.myOrder = transformedData;
             }
         },
         handleCurrentChange(page) {
