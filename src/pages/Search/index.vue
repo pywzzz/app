@@ -191,7 +191,7 @@ export default {
                 //这是让分页器用的，代表当前是第几页
                 pageNo: 1,
                 //代表一页展示多少个数据
-                pageSize: 5,
+                pageSize: 10,
                 // -------------------------------
             },
         };
@@ -317,8 +317,8 @@ export default {
             this.page = page;
             this.getData();
         },
-        handleSizeChange(limit) {
-            this.limit = limit;
+        handleSizeChange(pageSize) {
+            this.searchParams.pageSize = pageSize;
             this.getData();
         },
     },
