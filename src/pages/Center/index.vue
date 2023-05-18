@@ -11,11 +11,7 @@
                                 >我的订单</router-link
                             >
                         </dd>
-                        <dd>
-                            <router-link to="/center/grouporder"
-                                >团购订单</router-link
-                            >
-                        </dd>
+                        <dd>团购订单</dd>
                     </dl>
                     <dl>
                         <dt><i>·</i> 关注中心</dt>
@@ -35,7 +31,11 @@
                     <dl>
                         <dt><i>·</i> 设置</dt>
                         <dd>个人信息</dd>
-                        <dd>收货地址</dd>
+                        <dd>
+                            <router-link to="/center/myaddress"
+                                >收货地址</router-link
+                            >
+                        </dd>
                     </dl>
                 </div>
                 <!-- 右侧内容 -->
@@ -47,12 +47,12 @@
 
 <script>
 import MyOrder from "./MyOrder";
-import GroupOrder from "./GroupOrder";
+import MyAddress from "./MyAddress";
 export default {
     name: "",
     components: {
         MyOrder,
-        GroupOrder,
+        MyAddress,
     },
 };
 </script>

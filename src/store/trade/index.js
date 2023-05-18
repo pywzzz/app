@@ -1,4 +1,11 @@
-import { reqAddressInfo, reqOrderInfo } from "@/api";
+import {
+    reqAddressInfo,
+    reqOrderInfo,
+    reqAddAddressInfo,
+    reqUpdateAddressInfo,
+    reqDeleteAddressInfo,
+    reqChangeDefaultAddressInfo,
+} from "@/api";
 // 仓库存数据的地方
 const state = {
     address: [],
@@ -25,6 +32,38 @@ const actions = {
         let result = await reqOrderInfo();
         if (result.code == 200) {
             commit("GETORDERINFO", result.data);
+        }
+    },
+    async addUserAddress({ commit }, address) {
+        let result = await reqAddAddressInfo(address);
+        if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
+        }
+    },
+    async updateUserAddress({ commit }, addressInfo) {
+        let result = await reqUpdateAddressInfo(addressInfo);
+        if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
+        }
+    },
+    async deleteUserAddress({ commit }, addressId) {
+        let result = await reqDeleteAddressInfo(addressId);
+        if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
+        }
+    },
+    async changeDefaultUserAddress({ commit }, { userId, addressId }) {
+        let result = await reqChangeDefaultAddressInfo(userId, addressId);
+        if (result.code == 200) {
+            return "ok";
+        } else {
+            return Promise.reject(new Error("fail"));
         }
     },
 };

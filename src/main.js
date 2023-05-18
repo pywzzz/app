@@ -8,11 +8,31 @@ import store from "@/store";
 import TypeNav from "@/components/TypeNav";
 // 下面两行将轮播图部分注册成组件且，为个全局的组件
 import Carousel from "@/components/Carousel";
-import { MessageBox, Pagination } from "element-ui";
+import {
+    MessageBox,
+    Pagination,
+    Table,
+    TableColumn,
+    Button,
+    Popconfirm,
+    Dialog,
+    Form,
+    FormItem,
+    Input,
+} from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
 // 第一个参数是全局组件的名字，第二个是标明哪一个组件
 Vue.component(TypeNav.name, TypeNav);
 Vue.component(Carousel.name, Carousel);
 Vue.component(Pagination.name, Pagination);
+Vue.component(Table.name, Table);
+Vue.component(TableColumn.name, TableColumn);
+Vue.component(Button.name, Button);
+Vue.component(Popconfirm.name, Popconfirm);
+Vue.component(Dialog.name, Dialog);
+Vue.component(Form.name, Form);
+Vue.component(FormItem.name, FormItem);
+Vue.component(Input.name, Input);
 // 这种是直接挂在原形上的映入方式
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

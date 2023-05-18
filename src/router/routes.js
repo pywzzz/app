@@ -21,8 +21,8 @@ export default [
                 component: () => import("@/pages/Center/MyOrder"),
             },
             {
-                path: "grouporder",
-                component: () => import("@/pages/Center/GroupOrder"),
+                path: "myaddress",
+                component: () => import("@/pages/Center/MyAddress"),
             },
         ],
     },

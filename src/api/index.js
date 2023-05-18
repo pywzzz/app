@@ -103,3 +103,33 @@ export const reqFloorList = () => requests({ url: "/floor", method: "get" });
 // 验证token是否有效
 export const reqValidateToken = () =>
     requests({ url: "/user/validateToken", method: "get" });
+
+// 添加用户地址
+export const reqAddAddressInfo = (address) =>
+    requests({
+        url: "/user/userAddress/auth/addUserAddress",
+        method: "post",
+        data: address,
+    });
+
+// 更新用户地址
+export const reqUpdateAddressInfo = (addressInfo) =>
+    requests({
+        url: "/user/userAddress/auth/updateUserAddress",
+        method: "put",
+        data: addressInfo,
+    });
+
+// 逻辑删除用户地址
+export const reqDeleteAddressInfo = (addressId) =>
+    requests({
+        url: `/user/userAddress/auth/logicalDeleteUserAddress/${addressId}`,
+        method: "put",
+    });
+
+// 改变用户默认地址
+export const reqChangeDefaultAddressInfo = (userId, addressId) =>
+    requests({
+        url: `/user/userAddress/auth/changeDefaultUserAddress/${userId}/${addressId}`,
+        method: "put",
+    });
