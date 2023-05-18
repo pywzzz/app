@@ -3,23 +3,30 @@
         <h3 class="title">填写并核对订单信息</h3>
         <div class="content">
             <h5 class="receive">收件人信息</h5>
-            <div
-                class="address clearFix"
-                v-for="address in addressInfo"
-                :key="address.id"
-            >
-                <span
-                    class="username"
-                    :class="{ selected: address.isDefault == 1 }"
-                    >{{ address.consignee }}</span
+            <div v-if="processAddressInfo && processAddressInfo.length > 0">
+                <div
+                    class="address clearFix"
+                    v-for="address in processAddressInfo"
+                    :key="address.id"
                 >
-                <p @click="changeDefault(address, addressInfo)">
-                    <span class="s1">{{ address.fullAddress }}</span>
-                    <span class="s2">{{ address.phoneNum }}</span>
-                    <span class="s3" v-show="address.isDefault == 1"
-                        >默认地址</span
+                    <span
+                        class="username"
+                        :class="{ selected: address.isSelect == 1 }"
+                        >{{ address.consignee }}</span
                     >
-                </p>
+                    <p @click="changeSelect(address, processAddressInfo)">
+                        <span class="s1">{{ address.fullAddress }}</span>
+                        <span class="s2">{{ address.phoneNum }}</span>
+                        <span class="s3" v-show="address.isDefault == 1"
+                            >默认地址</span
+                        >
+                    </p>
+                </div>
+            </div>
+            <div v-else class="add-address-link">
+                <router-link to="/center/myaddress">
+                    您还未拥有任何收货地址：点我添加
+                </router-link>
             </div>
             <div class="line"></div>
             <h5 class="pay">支付方式</h5>
@@ -103,10 +110,11 @@
             </div>
             <div class="receiveInfo">
                 寄送至：
-                <span>{{ userDefaulAddress.fullAddress }}</span
+                <span>{{ userSelectAddress.fullAddress }}</span
                 ><br />
-                收货人：<span>{{ userDefaulAddress.consignee }}</span>
-                <span>{{ userDefaulAddress.phoneNum }}</span>
+                收货人：<span>{{ userSelectAddress.consignee }}</span
+                ><br />
+                手机号：<span>{{ userSelectAddress.phoneNum }}</span>
             </div>
         </div>
         <div class="sub clearFix">
@@ -121,12 +129,21 @@
 import { mapState } from "vuex";
 export default {
     name: "Trade",
+    mounted() {
+        this.$store.dispatch("getUserAddress");
+        this.$store.dispatch("getOrderInfo");
+        this.processAddressInfo = this.addressInfo.map((address) => {
+            return { ...address, isSelect: address.isDefault === 1 ? 1 : 0 };
+        });
+    },
     data() {
         return {
             // 给卖家的留言
             msg: "",
             // 接口返回的订单号
             orderId: "",
+            // 在原先的基础上加了一个isSelect属性，其初始值与isDefault的值一致
+            processAddressInfo: [],
         };
     },
     computed: {
@@ -134,9 +151,11 @@ export default {
             addressInfo: (state) => state.trade.address,
             orderInfo: (state) => state.trade.orderInfo,
         }),
-        userDefaulAddress() {
+        userSelectAddress() {
             // 数组的find方法会返回满足条件的数组
-            return this.addressInfo.find((item) => item.isDefault == 1) || {};
+            return (
+                this.processAddressInfo.find((item) => item.isSelect == 1) || {}
+            );
         },
         totalAmount() {
             return this.orderInfo.detailArrayList.reduce(
@@ -158,41 +177,47 @@ export default {
         },
     },
     methods: {
-        changeDefault(address, addressInfo) {
-            addressInfo.forEach((item) => {
-                item.isDefault = 0;
-                address.isDefault = 1;
+        changeSelect(address, processAddressInfo) {
+            processAddressInfo.forEach((item) => {
+                this.$set(item, "isSelect", 0);
             });
+            this.$set(address, "isSelect", 1);
         },
         async submitOrder() {
-            let data = {
-                // 付款人的名字
-                consignee: this.userDefaulAddress.consignee,
-                // 付款人的手机号
-                consigneeTel: this.userDefaulAddress.phoneNum,
-                // 付款人收货地址
-                deliveryAddress: this.userDefaulAddress.fullAddress,
-                // 支付方式都是在线支付
-                paymentWay: "ONLINE",
-                // 买家留言
-                orderComment: this.msg,
-                // 购物车商品信息
-                orderDetailList: this.orderInfo.detailArrayList,
-            };
-            let result = await this.$API.reqSubmitOrder(data);
-            if (result.code == 200) {
-                // 成功的话接口会返回一个叫data的订单号
-                this.orderId = result.data;
-                // 路由跳转的同时用query参数的形式传Pay组件所需的orderId这个数据
-                this.$router.push("/pay?orderId=" + this.orderId);
+            if (
+                this.processAddressInfo &&
+                this.processAddressInfo.length > 0 &&
+                this.processAddressInfo.some(
+                    (address) => address.isSelect === 1
+                )
+            ) {
+                let data = {
+                    // 付款人的名字
+                    consignee: this.userSelectAddress.consignee,
+                    // 付款人的手机号
+                    consigneeTel: this.userSelectAddress.phoneNum,
+                    // 付款人收货地址
+                    deliveryAddress: this.userSelectAddress.fullAddress,
+                    // 支付方式都是在线支付
+                    paymentWay: "ONLINE",
+                    // 买家留言
+                    orderComment: this.msg,
+                    // 购物车商品信息
+                    orderDetailList: this.orderInfo.detailArrayList,
+                };
+                let result = await this.$API.reqSubmitOrder(data);
+                if (result.code == 200) {
+                    // 成功的话接口会返回一个叫data的订单号
+                    this.orderId = result.data;
+                    // 路由跳转的同时用query参数的形式传Pay组件所需的orderId这个数据
+                    this.$router.push("/pay?orderId=" + this.orderId);
+                } else {
+                    alert(result.data);
+                }
             } else {
-                alert(result.data);
+                alert("请选择收货地址后再提交订单！");
             }
         },
-    },
-    mounted() {
-        this.$store.dispatch("getUserAddress");
-        this.$store.dispatch("getOrderInfo");
     },
 };
 </script>
@@ -442,5 +467,20 @@ export default {
             background-color: #e1251b;
         }
     }
+}
+
+.add-address-link {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 20px;
+    text-align: center;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.add-address-link a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #721c24;
 }
 </style>
