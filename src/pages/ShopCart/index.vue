@@ -100,7 +100,7 @@
                     <i class="summoney">{{ totalPrice }}</i>
                 </div>
                 <div class="sumbtn">
-                    <router-link class="sum-btn" to="/trade">结算</router-link>
+                    <a class="sum-btn" @click="checkAndGoToTrade"> 结算 </a>
                 </div>
             </div>
         </div>
@@ -203,6 +203,13 @@ export default {
                 this.getData();
             } catch (error) {
                 alert(error.message);
+            }
+        },
+        checkAndGoToTrade() {
+            if (this.cartInfoList.some((item) => item.isChecked === 1)) {
+                this.$router.push("/trade");
+            } else {
+                alert("您还没有选择商品，无法结算！");
             }
         },
     },
@@ -400,6 +407,7 @@ export default {
                 float: right;
 
                 a {
+                    cursor: pointer;
                     display: block;
                     position: relative;
                     width: 96px;
