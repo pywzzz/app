@@ -23,7 +23,7 @@
                         :key="attrValue.id"
                         @click="attrHandler(attr, attrValue)"
                     >
-                        <a>{{ attrValue.valueName }}</a>
+                        <a style="cursor: pointer">{{ attrValue.valueName }}</a>
                     </li>
                 </ul>
             </div>
@@ -111,6 +111,7 @@ export default {
 
                     img {
                         max-width: 100%;
+                        max-height: 100%;
                         vertical-align: middle;
                     }
                 }

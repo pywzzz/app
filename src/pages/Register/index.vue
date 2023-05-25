@@ -86,7 +86,7 @@
                     }"
                     :class="{ invalid: errors.has('agree') }"
                 />
-                <span>同意协议并注册《尚品汇用户协议》</span>
+                <span>同意协议并注册《用户协议》</span>
                 <span class="error-msg">{{ errors.first("agree") }}</span>
             </div>
             <div class="btn">
